@@ -39,7 +39,7 @@ public class FileHandler {
                 // }
                 
                 players.add(player);
-                player.displayPlayerInfo();
+                //player.displayPlayerInfo();
             }
         } catch (Exception e) {
             System.out.println("Error reading players file: " + e.getMessage());
@@ -128,7 +128,7 @@ public class FileHandler {
 
                 Monster monster = new Monster(monsterName, type, levelRequirement, hp, atk, def, hpIndicator, atkIndicator, defIndicator, accuracy, escapePrecentage, moneyLoot, fragmentLoot, expLoot, uniqueSkill, cooldownSkill);
                 monsters.add(monster);
-                monster.printMonsterDetails();
+                //monster.printMonsterDetails();
                 
             }
         } catch (Exception e) {
