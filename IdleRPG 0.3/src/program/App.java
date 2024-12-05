@@ -19,7 +19,11 @@ public class App {
         BattleSystem battleSystem = new BattleSystem();
         
         Scanner scanner = new Scanner(System.in);
-
+        System.out.println("========================================");
+        System.out.println("           Selamat Datang Di");
+        System.out.println("             Game Idle RPG");
+        System.out.println("               Kelompok 3                ");
+        System.out.println("========================================");
         while (currentPlayer == null) {
             System.out.println("=== Login Menu === ");
             System.out.println("1. Login Account");
@@ -52,26 +56,25 @@ public class App {
             System.out.println("5. Inventory");
             System.out.println("0. Exit");
             System.out.print("Choose an option: ");
-            int choice = scanner.nextInt();
-            scanner.nextLine();
+            String choice = scanner.nextLine();
 
             switch (choice) {
-                case 1:
+                case "1":
                     currentPlayer.displayPlayerInfo();
                     break;
-                case 2:
+                case "2":
                     battleSystem.startBattle(currentPlayer, monsters);
                     break;
-                case 3:
+                case "3":
                     System.out.println("Coming soon . . .");
                     break;
-                case 4:
+                case "4":
                 System.out.println("Coming soon . . .");
                     break;
-                case 5:
+                case "5":
                 System.out.println("Coming soon . . .");
                     break;
-                case 0:
+                case "0":
                 fileHandler.savePlayers(players);
                 System.exit(0);
                 default:
