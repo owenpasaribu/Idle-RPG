@@ -2,7 +2,7 @@ package program;
 
 import model.*;
 import controller.*;
-import view.*;
+//import view.*;
 
 import java.util.List;
 import java.util.Scanner;
@@ -34,7 +34,7 @@ public class App {
     
             switch (choice) {
                 case "1":
-                    currentPlayer = fileHandler.loginPlayer(scanner, players);
+                    currentPlayer = FileHandler.loginPlayer(scanner, players);
                     break;
                 case "2":
                     fileHandler.registerPlayer(scanner, players);
