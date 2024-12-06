@@ -119,21 +119,28 @@ public class Player {
     //     inventory.remove(item);
     // }
 
-    public void gainExp(int expLoot){
+    public void gainExp(int expLoot) {
         this.exp += expLoot;
-        while (this.exp >= (100+(50*(this.exp-1)))) {
-            this.exp=this.exp-(100 + (50*(this.exp-1)));
+    
+        // Rumus pengalaman yang diperlukan untuk naik level
+        int requiredExpForNextLevel = 100 + (50 * (this.level - 1));
+        
+        while (this.exp >= requiredExpForNextLevel) {
+            this.exp -= requiredExpForNextLevel; // Kurangi EXP yang dipakai untuk naik level
             levelUp();
+            requiredExpForNextLevel = 100 + (50 * (this.level - 1)); // Update untuk level berikutnya
         }
     }
+    
 
     public void levelUp() {
         this.level++;
-        this.hp+=25;
-        this.atk+=15;
-        this.def+=8;
-        System.out.println("Congrats! You leveled up to level" + this.level);
+        this.hp += 25;
+        this.atk += 15;
+        this.def += 8;
+        System.out.println("Congrats! You leveled up to Level " + this.level + "!");
     }
+    
 
     // Menampilkan informasi pemain
     public void displayPlayerInfo() {
