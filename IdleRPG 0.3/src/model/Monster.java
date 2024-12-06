@@ -145,9 +145,9 @@ public class Monster {
     public void printMonsterDetails(){
         System.out.println("Name\t: " + this.monsterName);
         System.out.println("Level\t: " + this.levelRequirement);
-        System.out.println("HP\t: " + this.hp);
-        System.out.println("ATK\t: " + this.atk);
-        System.out.println("DEF\t: " + this.def);
+        System.out.println("HP\t: " + this.hpIndicator);
+        System.out.println("ATK\t: " + this.atkIndicator);
+        System.out.println("DEF\t: " + this.defIndicator);
         
         
         System.out.println("Skill\t:\n- " + this.uniqueSkill);
