@@ -10,7 +10,7 @@ public class Player {
     private int def;
     private int money;
     private int fragment;
-    // private List<Item> inventory;
+    private List<Item> inventory;
 
     // Konstruktor
     public Player(String username, String password, int level, int exp, int money, int fragment) {
@@ -23,7 +23,7 @@ public class Player {
         this.def = (10+(8*(level-1)));
         this.money = money;
         this.fragment = fragment;
-        // this.inventory = new ArrayList<>();
+        this.inventory = new ArrayList<>();
     }
 
     // Getter dan Setter untuk username
@@ -108,16 +108,16 @@ public class Player {
     }
 
     // Getter dan Setter untuk items
-    // public List<Item> getInventory() {
-    //     return this.inventory;
-    // }
+    public List<Item> getInventory() {
+        return this.inventory;
+    }
 
-    // public void addItemToInventory(Item item){
-    //     inventory.add(item);
-    // }
-    // public void removeItemFromInventory(Item item){
-    //     inventory.remove(item);
-    // }
+    public void addItemToInventory(Item item){
+        inventory.add(item);
+    }
+    public void removeItemFromInventory(Item item){
+        inventory.remove(item);
+    }
 
     public void gainExp(int expLoot) {
         this.exp += expLoot;
