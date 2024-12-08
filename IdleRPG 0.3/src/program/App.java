@@ -13,8 +13,9 @@ public class App {
         Player currentPlayer = null;
         FileHandler fileHandler = new FileHandler();
 
+        List<Item> items = fileHandler.loadItems();
         List<Monster> monsters = fileHandler.loadMonsters();
-        List<Player> players = fileHandler.loadPlayers();
+        List<Player> players = fileHandler.loadPlayers(items);
         
         BattleSystem battleSystem = new BattleSystem();
         
@@ -69,10 +70,12 @@ public class App {
                     System.out.println("Coming soon . . .");
                     break;
                 case "4":
-                System.out.println("Coming soon . . .");
+                    Shop shop = new Shop(currentPlayer, items);
+                    shop.displayShop(scanner);
                     break;
                 case "5":
-                System.out.println("Coming soon . . .");
+                    Inventory inventory = new Inventory(currentPlayer);
+                    inventory.manageInventory(scanner);
                     break;
                 case "0":
                 fileHandler.savePlayers(players);
