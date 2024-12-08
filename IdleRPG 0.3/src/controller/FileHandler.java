@@ -14,9 +14,10 @@ import java.util.Scanner;
 public class FileHandler {
     private final String PLAYERS_FILE = "src/data/players_data.csv";
     private final String MONSTERS_FILE = "src/data/monsters_data.csv";
+    private final String ITEMS_FILE = "src/data/items_data.csv";
 
 
-    public List<Player> loadPlayers(){
+    public List<Player> loadPlayers(List<Item> items){
         List<Player> players = new ArrayList<>();
         try(BufferedReader br = new BufferedReader(new FileReader(PLAYERS_FILE))){
             String line;
@@ -32,11 +33,11 @@ public class FileHandler {
 
                 Player player = new Player(username, password, level, exp, money, fragment);
                 
-                // Fungsi buat load kemudian cari + tambahin item ke inventory
-                // for (int i = 9; i < data.length; i++) {
-                //     Item item = findItemByName(items, data[i]);
-                //     player.addItemToInventory(item);
-                // }
+               // Fungsi buat load kemudian cari + tambahin item ke inventory
+                for (int i = 6; i < data.length; i++) {
+                    Item item = findItemByName(items, data[i]);
+                    player.addItemToInventory(item);
+                }
                 
                 players.add(player);
                 //player.displayPlayerInfo();
@@ -53,9 +54,9 @@ public class FileHandler {
                 bw.write(player.getUsername() + "," + player.getPassword() + "," + player.getLevel() + "," + player.getExp() + "," + player.getMoney() + "," + player.getFragment());
 
                 // Fungsi buat save item dari inventory ke file
-                // for (Item item : player.getInventory()) {
-                //     bw.write("," + item.getName());
-                // }
+                for (Item item : player.getInventory()) {
+                    bw.write("," + item.getName());
+                }
 
                 bw.newLine();
             }
@@ -135,5 +136,37 @@ public class FileHandler {
             System.out.println("Error reading monsters file: " + e.getMessage());
         }
         return monsters;
+    }
+
+    public List<Item> loadItems(){
+        List<Item> items = new ArrayList<>();
+        try(BufferedReader br = new BufferedReader(new FileReader(ITEMS_FILE))){
+            String line;
+            line = br.readLine();
+            while ((line = br.readLine()) != null) {
+                String[] data = line.split(",");
+
+                String itemName = data[0];
+                String type = data[1];
+                int level = Integer.parseInt(data[2]);
+                int price = Integer.parseInt(data[3]);
+
+                Item item = new Item(itemName, type, level, price);
+                items.add(item);
+                item.printItemData();
+            }
+        } catch (Exception e) {
+            System.out.println("Error reading items file: " + e.getMessage());
+        }
+        return items;
+    }
+
+    public static Item findItemByName(List<Item> items, String name){
+        for (Item item : items) {
+            if (item.getItemName().equals(name)) {
+                return item;
+            }
+        }
+        return null;
     }
 }
