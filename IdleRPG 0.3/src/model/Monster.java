@@ -155,4 +155,3 @@ public class Monster {
         System.out.println("Escape Chance : " + this.escapePrecentage + "%\n\n");
     }
 }
-
