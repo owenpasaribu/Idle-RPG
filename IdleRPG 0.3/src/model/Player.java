@@ -153,7 +153,6 @@ public class Player {
         System.out.println("Defense: " + this.def);
         System.out.println("Money: " + this.money);
         System.out.println("Fragments: " + this.fragment);
-        // System.out.println("Items: " + formatItems(player.getItems()));
         System.out.println("------------------------");
     }
 }
