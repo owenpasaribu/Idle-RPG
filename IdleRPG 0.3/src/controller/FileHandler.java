@@ -2,7 +2,7 @@ package controller;
 
 import model.Monster;
 import model.Player;
-import model.item
+import model.Item;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -52,17 +52,16 @@ public class FileHandler {
     public void savePlayers(List<Player> players){
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(PLAYERS_FILE))) {
             for (Player player : players) {
-                bw.write(player.getUsername() + "," + player.getPassword() + "," + player.getLevel() + "," + player.getExp() + "," + player.getMoney() + "," + player.getFragment());
+                bw.write(player.getUsername() + "," + player.getPassword() + "," + player.getLevel() + "," + player.getExp() + "," + player.getGold() + "," + player.getFragment());
 
                 // Fungsi buat save item dari inventory ke file
                 for (Item item : player.getInventory()) {
-                    bw.write("," + item.getName());
+                    bw.write("," + item.getItemName());
                 }
 
                 bw.newLine();
             }
         } catch (Exception e) {
-            // TODO: handle exception
             System.out.println("Error saving player data: " + e.getMessage());
         }
     }
