@@ -60,6 +60,7 @@ public class BattleSystem {
                     playerHP = monsterTurn(playerHP, currentPlayer, currentMonster);
                     if (playerHP <= 0) {
                         System.out.println("You Lose!");
+                        LosePunishment(currentPlayer, currentMonster);
                         return;
                     }
                 }
@@ -111,7 +112,9 @@ public class BattleSystem {
         System.out.println("You got " + currentMonster.getExpLoot() + " EXP, " + currentMonster.getMoneyLoot() + " Money, "+ currentMonster.getFragmentLoot() + " Fragment Loot");
     }
 
-
+    public void LosePunishment(Player currentPlayer, Monster currentMonster){
+        currentPlayer.setGold(currentPlayer.getGold()-2*currentMonster.getMoneyLoot());
+    }
 
     public boolean escaped(int escapePrecentage){
         int value = random.nextInt(100) + 1;
