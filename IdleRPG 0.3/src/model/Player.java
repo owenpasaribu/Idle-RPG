@@ -1,5 +1,6 @@
 package model;
-
+import java.util.List;
+import java.util.ArrayList;
 public class Player {
     private String username;
     private String password;
@@ -90,11 +91,11 @@ public class Player {
     }
 
     // Getter dan Setter untuk money
-    public int getMoney() {
+    public int getGold() {
         return money;
     }
 
-    public void setMoney(int money) {
+    public void setGold(int money) {
         this.money = money;
     }
 
