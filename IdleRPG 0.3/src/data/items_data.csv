@@ -1,0 +1,11 @@
+itemName,type,level,price
+Iron Sword,Weapon,1,100
+Healing Potion,Consumable,1,50
+Leather Armor,Armor,1,150
+Fireball Spell,Spell,2,200
+Steel Shield,Armor,2,250
+Mana Potion,Consumable,2,75
+Battle Axe,Weapon,3,300
+Health Elixir,Consumable,3,120
+Magic Staff,Weapon,4,400
+Dragon Scale Armor,Armor,5,1000
