@@ -2,7 +2,7 @@ package controller;
 
 import model.Monster;
 import model.Player;
-
+import view.ViewBattle;
 import java.util.List;
 import java.util.Random;
 import java.util.Scanner;
@@ -10,6 +10,7 @@ import java.util.stream.Collectors;
 
 public class BattleSystem {
     private static Random random = new Random();
+    ViewBattle viewBattle = new ViewBattle();
     Scanner scanner = new Scanner(System.in);
 
 
@@ -28,13 +29,13 @@ public class BattleSystem {
                 while (playerHP > 0 && monsterHP > 0) {
                     monsterHP = playerTurn(monsterHP, currentPlayer, currentMonster);
                     if (monsterHP <= 0) {
-                        System.out.println("You win!");
+                        viewBattle.WinBattle();
                         getLoot(currentPlayer, currentMonster);
                         break;
                     }
                     playerHP = monsterTurn(playerHP, currentPlayer, currentMonster);
                     if (playerHP <= 0) {
-                        System.out.println("You Lose!");
+                        viewBattle.LoseBattle();
                         return;
                     }
                 }
@@ -53,14 +54,13 @@ public class BattleSystem {
                 while (playerHP > 0 && monsterHP > 0) {
                     monsterHP = playerTurn(monsterHP, currentPlayer, currentMonster);
                     if (monsterHP <= 0) {
-                        System.out.println("You win!");
+                        viewBattle.WinBattle();
                         getLoot(currentPlayer, currentMonster);
                         break;
                     }
                     playerHP = monsterTurn(playerHP, currentPlayer, currentMonster);
                     if (playerHP <= 0) {
-                        System.out.println("You Lose!");
-                        LosePunishment(currentPlayer, currentMonster);
+                        viewBattle.LoseBattle();
                         return;
                     }
                 }
@@ -107,18 +107,20 @@ public class BattleSystem {
 
     public void getLoot(Player currentPlayer, Monster currentMonster){
         currentPlayer.gainExp(currentMonster.getExpLoot());
-        currentPlayer.setMoney(currentPlayer.getMoney() + currentMonster.getMoneyLoot());
+        currentPlayer.setGold(currentPlayer.getGold() + currentMonster.getMoneyLoot());
         currentPlayer.setFragment(currentPlayer.getFragment() + currentMonster.getFragmentLoot());
-        System.out.println("You got " + currentMonster.getExpLoot() + " EXP, " + currentMonster.getMoneyLoot() + " Money, "+ currentMonster.getFragmentLoot() + " Fragment Loot");
+        System.out.println("Hasil Jarahan:");
+        System.out.println(" - EXP        : " + currentMonster.getExpLoot() + " Point");
+        System.out.println(" - Money      : " + currentMonster.getMoneyLoot() + " Gold");
+        System.out.println(" - Fragment   : " + currentMonster.getFragmentLoot() + " Fragment");
+
     }
 
-    public void LosePunishment(Player currentPlayer, Monster currentMonster){
-        currentPlayer.setGold(currentPlayer.getGold()-2*currentMonster.getMoneyLoot());
-    }
+
 
     public boolean escaped(int escapePrecentage){
         int value = random.nextInt(100) + 1;
-        if (value <= escapePrecentage) {
+        if (value >= escapePrecentage) {
             return false;
         } else {
             return true;
