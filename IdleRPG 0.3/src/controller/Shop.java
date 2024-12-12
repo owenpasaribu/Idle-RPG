@@ -26,24 +26,30 @@ public class Shop {
             
         switch (choice) {
             case "1":
-            System.out.println("Gold : " + player.getGold());
-            for (int i = 0; i < items.size(); i++) {
-                Item item = items.get(i);
-                System.out.println((i+1) + " - " + item.getItemName() + " ( " + item.getType() + " )\t| Price : " + item.getPrice());
-            }
-            System.out.println("0 - Back");
-    
-            int itemIndex = scanner.nextInt();
-            scanner.nextLine();
-            if(itemIndex > 0 && itemIndex <= items.size()){
-                buyItem(itemIndex);
-            }
-            else if (itemIndex == 0) {
-                break;
-            }
-            else{
-                System.out.println("Invalid option. Try again.");
-            }
+                while (true) {
+                    System.out.println("Gold: " + player.getGold());
+                    for (int i = 0; i < items.size(); i++) {
+                        Item item = items.get(i);
+                        System.out.println((i + 1) + " - " + item.getItemName() + " (" + item.getType() + ")\t| Price: " + item.getPrice());
+                    }
+                    System.out.println("0 - Back");
+                    System.out.print("Select an option: ");
+
+                    int itemIndex = scanner.nextInt();
+                    scanner.nextLine(); // Membersihkan buffer
+
+                    if (itemIndex == 0) {
+                        displayShop(scanner);
+                        break;
+                    } else if (itemIndex > 0 && itemIndex <= items.size()) {
+                        boolean success = buyItem(itemIndex);
+                        if (!success) {
+                            continue;
+                        }
+                    } else {
+                        System.out.println("Invalid option. Try again.");
+                    }
+                }
                 break;
             
             case "2":
@@ -59,16 +65,17 @@ public class Shop {
         }
     }
     
-    public void buyItem(int itemIndex){
+    public boolean buyItem(int itemIndex) {
         Item item = items.get(itemIndex - 1);
-            if (player.getGold()>=item.getPrice()) {
-                player.addItemToInventory(item);
-                player.setGold(player.getGold()-item.getPrice());
-                System.out.println("You bought " + item.getItemName() + "!");
-            } else {
-                System.out.println("You don't have enough money to buy this item.");
-            }
-        
+        if (player.getGold() >= item.getPrice()) {
+            player.addItemToInventory(item);
+            player.setGold(player.getGold() - item.getPrice());
+            System.out.println("You bought " + item.getItemName() + "!");
+            return true; // Pembelian berhasil
+        } else {
+            System.out.println("You don't have enough money to buy this item.");
+            return false; // Pembelian gagal
+        }
     }
 
     public void changeFragment(Scanner scanner){
