@@ -4,72 +4,74 @@ import java.util.List;
 import java.util.Scanner;
 import model.Item;
 import model.Player;
-import view.ShopView;
 
 public class Shop {
     private Player player;
     private List<Item> items;
-    private ShopView shopView;
 
     public Shop(Player player, List<Item> items) {
         this.player = player;
         this.items = items;
-        this.shopView = new ShopView();
     }
 
-    public void openShop(Scanner scanner) {
-        boolean exitShop = false;
+    public void displayShop(Scanner scanner){
+        System.out.println("Welcome to the shop!");
+        System.out.println("You have " + player.getGold() + " gold.");
 
-        while (!exitShop) {
-            String choice = shopView.getShopMenuChoice(scanner, player);
-
-            switch (choice) {
-                case "1":
-                    handleBuyItem(scanner);
-                    break;
-                case "2":
-                    changeFragment();
-                    break;
-                case "0":
-                    exitShop = true;
-                    break;
-                default:
-                    shopView.displayInvalidOption();
+        System.out.println("1. Buy Item");
+        System.out.println("2. Change Fragment");
+        System.out.println("0. Exit Shop");
+        System.out.print("Select menu: ");
+        String choice = scanner.nextLine();
+            
+        switch (choice) {
+            case "1":
+            System.out.println("Gold : " + player.getGold());
+            for (int i = 0; i < items.size(); i++) {
+                Item item = items.get(i);
+                System.out.println((i+1) + " - " + item.getItemName() + " ( " + item.getType() + " )\t| Price : " + item.getPrice());
             }
+            System.out.println("0 - Back");
+    
+            int itemIndex = scanner.nextInt();
+            scanner.nextLine();
+            if(itemIndex > 0 && itemIndex <= items.size()){
+                buyItem(itemIndex);
+            }
+            else if (itemIndex == 0) {
+                break;
+            }
+            else{
+                System.out.println("Invalid option. Try again.");
+            }
+                break;
+            
+            case "2":
+            changeFragment(scanner);
+            break;
+
+            case "0":
+            return;
+        
+            default:
+                System.out.println("Invalid choice");
+            break;
         }
     }
-
-    private void handleBuyItem(Scanner scanner) {
-        while (true) {
-            int itemIndex = shopView.getItemSelection(scanner, items, player);
-
-            if (itemIndex == 0) {
-                return; // Kembali ke menu utama Shop
-            } else if (itemIndex > 0 && itemIndex <= items.size()) {
-                boolean success = buyItem(itemIndex);
-                if (!success) {
-                    continue; // Jika gagal beli, tampilkan item lagi
-                }
-            } else {
-                shopView.displayInvalidOption();
-            }
-        }
-    }
-
-    private boolean buyItem(int itemIndex) {
+    
+    public void buyItem(int itemIndex){
         Item item = items.get(itemIndex - 1);
-        if (player.getGold() >= item.getPrice()) {
-            player.addItemToInventory(item);
-            player.setGold(player.getGold() - item.getPrice());
-            shopView.displayPurchaseSuccess(item.getItemName());
-            return true;
-        } else {
-            shopView.displayInsufficientGold();
-            return false;
-        }
+            if (player.getGold()>=item.getPrice()) {
+                player.addItemToInventory(item);
+                player.setGold(player.getGold()-item.getPrice());
+                System.out.println("You bought " + item.getItemName() + "!");
+            } else {
+                System.out.println("You don't have enough money to buy this item.");
+            }
+        
     }
 
-    private void changeFragment() {
-        shopView.displayChangeFragment();
+    public void changeFragment(Scanner scanner){
+        System.out.println("Coming soon . . .");
     }
 }
