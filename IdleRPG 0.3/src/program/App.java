@@ -14,6 +14,7 @@ public class App {
         FileHandler fileHandler = new FileHandler();
         ViewLogin viewLogin = new ViewLogin();
         ViewMenu viewMenu = new ViewMenu();
+        ViewStats viewStats = new ViewStats();
         List<Item> items = fileHandler.loadItems();
         List<Monster> monsters = fileHandler.loadMonsters();
         List<Player> players = fileHandler.loadPlayers(items);
@@ -48,7 +49,7 @@ public class App {
                 case "1":
                     boolean exitSubMenu = false; // Variabel untuk keluar dari sub-menu
                     do {
-                        currentPlayer.displayPlayerInfo();
+                        viewStats.displayPlayerInfo(currentPlayer);
                         System.out.println("Pilihan:");
                         System.out.println("1. Inventory");
                         System.out.println("2. Main Menu");
