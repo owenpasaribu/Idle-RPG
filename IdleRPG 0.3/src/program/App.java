@@ -78,7 +78,7 @@ public class App {
                     break;
                 case "4":
                     Shop shop = new Shop(currentPlayer, items);
-                    shop.displayShop(scanner);
+                    shop.openShop(scanner);
                     break;
                 case "5":
                 System.out.println("Coming soon . . .");
