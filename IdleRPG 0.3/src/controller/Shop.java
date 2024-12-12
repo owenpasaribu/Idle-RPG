@@ -17,23 +17,22 @@ public class Shop {
         this.shopView = new ShopView();
     }
 
-    public void displayShop(Scanner scanner) {
-        while (true) {
-            shopView.displayShopMenu(player);
-            String choice = scanner.nextLine();
+    public void openShop(Scanner scanner) {
+        boolean exitShop = false;
+
+        while (!exitShop) {
+            String choice = shopView.getShopMenuChoice(scanner, player);
 
             switch (choice) {
                 case "1":
                     handleBuyItem(scanner);
                     break;
-
                 case "2":
-                    changeFragment(scanner);
+                    changeFragment();
                     break;
-
                 case "0":
-                    return;
-
+                    exitShop = true;
+                    break;
                 default:
                     shopView.displayInvalidOption();
             }
@@ -42,10 +41,7 @@ public class Shop {
 
     private void handleBuyItem(Scanner scanner) {
         while (true) {
-            shopView.displayItems(items, player);
-
-            int itemIndex = scanner.nextInt();
-            scanner.nextLine(); // Membersihkan buffer
+            int itemIndex = shopView.getItemSelection(scanner, items, player);
 
             if (itemIndex == 0) {
                 return; // Kembali ke menu utama Shop
@@ -60,7 +56,7 @@ public class Shop {
         }
     }
 
-    public boolean buyItem(int itemIndex) {
+    private boolean buyItem(int itemIndex) {
         Item item = items.get(itemIndex - 1);
         if (player.getGold() >= item.getPrice()) {
             player.addItemToInventory(item);
@@ -73,7 +69,7 @@ public class Shop {
         }
     }
 
-    public void changeFragment(Scanner scanner) {
+    private void changeFragment() {
         shopView.displayChangeFragment();
     }
 }
