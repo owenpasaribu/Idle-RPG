@@ -102,14 +102,15 @@ public class FileHandler {
         return null;
     }
 
-    public List<Monster> loadMonsters(){
+    public List<Monster> loadMonsters() {
         List<Monster> monsters = new ArrayList<>();
-        try(BufferedReader br = new BufferedReader(new FileReader(MONSTERS_FILE))){
+        try (BufferedReader br = new BufferedReader(new FileReader(MONSTERS_FILE))) {
             String line;
-            line = br.readLine();
+            br.readLine();  // Untuk melewati header (jika ada)
+            
             while ((line = br.readLine()) != null) {
                 String[] data = line.split(",");
-
+    
                 String monsterName = data[0];
                 String type = data[1];
                 int levelRequirement = Integer.parseInt(data[2]);
@@ -126,17 +127,17 @@ public class FileHandler {
                 int expLoot = Integer.parseInt(data[13]);
                 String uniqueSkill = data[14];
                 int cooldownSkill = Integer.parseInt(data[15]);
-
+    
+                // Membuat objek monster baru berdasarkan data yang dimuat
                 Monster monster = new Monster(monsterName, type, levelRequirement, hp, atk, def, hpIndicator, atkIndicator, defIndicator, accuracy, escapePrecentage, moneyLoot, fragmentLoot, expLoot, uniqueSkill, cooldownSkill);
-                monsters.add(monster);
-                //monster.printMonsterDetails();
-                
+                monsters.add(monster);  // Menambahkan monster ke dalam daftar
             }
         } catch (Exception e) {
             System.out.println("Error reading monsters file: " + e.getMessage());
         }
         return monsters;
     }
+    
 
     public List<Item> loadItems(){
         List<Item> items = new ArrayList<>();
@@ -153,7 +154,7 @@ public class FileHandler {
 
                 Item item = new Item(itemName, type, level, price);
                 items.add(item);
-                item.printItemData();
+                //item.printItemData();
             }
         } catch (Exception e) {
             System.out.println("Error reading items file: " + e.getMessage());
