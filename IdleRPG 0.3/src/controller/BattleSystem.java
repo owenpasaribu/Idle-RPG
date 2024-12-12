@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Random;
 import java.util.Scanner;
 import java.util.stream.Collectors;
+import view.ViewMonster;
 
 public class BattleSystem {
     private static Random random = new Random();
@@ -17,7 +18,7 @@ public class BattleSystem {
     public void startBattle(Player currentPlayer, List<Monster> monsters){
         Monster currentMonster = BattleSystem.generateMonster(currentPlayer.getLevel(), monsters);
         System.out.println("Found Monster");
-        currentMonster.printMonsterDetails();
+        viewMonster.printMonsterDetails(currentMonster);
         System.out.println("Do you want to fight? (Y/N)");
         String choice = scanner.nextLine();
         
@@ -106,14 +107,13 @@ public class BattleSystem {
     }
 
     public void getLoot(Player currentPlayer, Monster currentMonster){
-        currentPlayer.gainExp(currentMonster.getExpLoot());
         currentPlayer.setGold(currentPlayer.getGold() + currentMonster.getMoneyLoot());
         currentPlayer.setFragment(currentPlayer.getFragment() + currentMonster.getFragmentLoot());
         System.out.println("Hasil Jarahan:");
         System.out.println(" - EXP        : " + currentMonster.getExpLoot() + " Point");
         System.out.println(" - Money      : " + currentMonster.getMoneyLoot() + " Gold");
         System.out.println(" - Fragment   : " + currentMonster.getFragmentLoot() + " Fragment");
-
+        currentPlayer.gainExp(currentMonster.getExpLoot());
     }
 
 
