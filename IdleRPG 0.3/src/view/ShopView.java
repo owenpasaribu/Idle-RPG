@@ -9,7 +9,7 @@ public class ShopView {
 
     // Menampilkan menu utama Shop dan mendapatkan pilihan pengguna
     public String getShopMenuChoice(Scanner scanner, Player player) {
-        System.out.println("Welcome to the shop!");
+        System.out.println("\n===Welcome to the shop!===");
         System.out.println("You have " + player.getGold() + " gold.");
         System.out.println("1. Buy Item");
         System.out.println("2. Change Fragment");
