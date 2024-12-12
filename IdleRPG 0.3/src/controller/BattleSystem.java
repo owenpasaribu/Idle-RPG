@@ -12,6 +12,7 @@ import view.ViewMonster;
 public class BattleSystem {
     private static Random random = new Random();
     ViewBattle viewBattle = new ViewBattle();
+    ViewMonster viewMonster = new ViewMonster();
     Scanner scanner = new Scanner(System.in);
 
 
