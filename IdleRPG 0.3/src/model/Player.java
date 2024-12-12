@@ -1,6 +1,8 @@
 package model;
 import java.util.List;
+import java.util.Scanner;
 import java.util.ArrayList;
+
 public class Player {
     private String username;
     private String password;
@@ -142,4 +144,51 @@ public class Player {
         System.out.println("Congrats! You leveled up to Level " + this.level + "!");
     }
     
+    // Menambahkan method getName() untuk mendapatkan nama pemain
+    public String getName() {
+        return this.username;
+    }
+
+    // Menambahkan method attack() untuk menghitung damage serangan pemain
+    public int attack() {
+        return this.atk;  // Hanya mengembalikan nilai ATK untuk sementara
+    }
+    // Menambahkan method useItem() untuk menggunakan item
+    public void useItem(Scanner scanner) {
+    
+    // Implementasi penggunaan item, misalnya:
+    System.out.println("Which item would you like to use?");
+    // Lakukan logika sesuai item yang ada di inventory
+    }
+
+    // Menambahkan method addMoney() untuk menambah uang pemain
+    public void addMoney(int amount) {
+        this.money += amount;
+    }
+
+    // Menambahkan method addExp() untuk menambah EXP pemain
+    public void addExp(int amount) {
+    this.exp += amount;
+    // Tambahkan logika untuk naik level jika EXP melebihi batas level
+    int requiredExp = 100 + (50 * (this.level - 1)); // Sesuaikan rumus EXP
+    while (this.exp >= requiredExp) {
+        this.exp -= requiredExp;
+        levelUp(); // Panggil method levelUp()
+        }
+    }
+
+
+    // Menampilkan informasi pemain
+    public void displayPlayerInfo() {
+        System.out.println("----- Player Info -----");
+        System.out.println("Username: " + this.username);
+        System.out.println("Level: " + this.level);
+        System.out.println("EXP: " + this.exp);
+        System.out.println("HP: " + this.hp);
+        System.out.println("Attack: " + this.atk);
+        System.out.println("Defense: " + this.def);
+        System.out.println("Money: " + this.money);
+        System.out.println("Fragments: " + this.fragment);
+        System.out.println("------------------------");
+    }
 }
