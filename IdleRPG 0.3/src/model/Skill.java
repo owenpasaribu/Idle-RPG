@@ -31,4 +31,3 @@ public class Skill {
         return this.effect;
     }
 }
-
