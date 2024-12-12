@@ -141,17 +141,4 @@ public class Monster {
     public void itemDrop(){}
 
     public void cdSkill(){}
-
-    public void printMonsterDetails(){
-        System.out.println("Name\t: " + this.monsterName);
-        System.out.println("Level\t: " + this.levelRequirement);
-        System.out.println("HP\t: " + this.hpIndicator);
-        System.out.println("ATK\t: " + this.atkIndicator);
-        System.out.println("DEF\t: " + this.defIndicator);
-        
-        
-        System.out.println("Skill\t:\n- " + this.uniqueSkill);
-        System.out.println("( CD: " + this.cooldownSkill + " )");
-        System.out.println("Escape Chance : " + this.escapePrecentage + "%\n\n");
-    }
 }
