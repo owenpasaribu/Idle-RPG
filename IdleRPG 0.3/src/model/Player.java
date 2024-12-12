@@ -142,18 +142,4 @@ public class Player {
         System.out.println("Congrats! You leveled up to Level " + this.level + "!");
     }
     
-
-    // Menampilkan informasi pemain
-    public void displayPlayerInfo() {
-        System.out.println("----- Player Info -----");
-        System.out.println("Username: " + this.username);
-        System.out.println("Level: " + this.level);
-        System.out.println("EXP: " + this.exp);
-        System.out.println("HP: " + this.hp);
-        System.out.println("Attack: " + this.atk);
-        System.out.println("Defense: " + this.def);
-        System.out.println("Money: " + this.money);
-        System.out.println("Fragments: " + this.fragment);
-        System.out.println("------------------------");
-    }
 }
