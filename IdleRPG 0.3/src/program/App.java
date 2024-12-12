@@ -48,6 +48,9 @@ public class App {
                 case "1":
                     do {
                         currentPlayer.displayPlayerInfo();
+                        System.out.println("Pilihan:");
+                        System.out.println("1. Inventory");
+                        System.out.println("2. Main Menu");
                         String Stats = scanner.nextLine();
                         switch (Stats) {
                             case "1":
