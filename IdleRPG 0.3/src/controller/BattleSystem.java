@@ -128,8 +128,18 @@ public class BattleSystem {
 
     // Method untuk Boss Battle
     public void startBossBattle(Player currentPlayer, List<Monster> monsters) {
+        //cek apakah level pemain adalah kelipatan 10
+        if (currentPlayer.getLevel() % 10 != 0) {
+            System.out.println("Increase your level, your level is not enough to fight the boss monster");
+            return ; // Kembali ke menu utama jika level tidak memenuhi syarat
+        }
+
         Monster boss = generateboss(currentPlayer.getLevel(), monsters);
         
+        if (boss == null) {
+            System.out.println("No Boss available at the moment!");
+            return;
+        }
         System.out.println("Battle Start!");
         
         int bossCooldown = boss.getCooldownSkill();
