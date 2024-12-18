@@ -1,0 +1,4 @@
+itemName,type,level,levelReq,price,tier,damage,accuracy,weaponSkill,cooldownSkill,effect
+Bronze Sword,Weapon,1,1,100,B,10,80,Slash,5,Poison
+Silver Sword,Weapon,1,1,500,A,25,90,Pierce,4,Poison
+Gold Sword,Weapon,1,1,1000,S,50,100,Whirlwind,3,Poison

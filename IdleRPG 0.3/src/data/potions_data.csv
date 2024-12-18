@@ -1,0 +1,5 @@
+itemName,type,level,levelReq,price,hpBoost,atkBoost,defBoost,effect
+Health Potion,Potion,1,1,50,50,0,0,Heal
+Strength Potion,Potion,1,1,100,0,20,0,Boost Attack
+Defense Potion,Potion,1,1,100,0,0,20,Boost Defense
+Cure Potion,Potion,1,1,200,0,0,0,Cure Poison
