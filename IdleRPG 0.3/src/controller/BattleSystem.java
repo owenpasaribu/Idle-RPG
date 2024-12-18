@@ -1,87 +1,124 @@
 package controller;
 
-import model.Monster;
-import model.Player;
-import view.ViewBattle;
 import java.util.List;
 import java.util.Random;
 import java.util.Scanner;
 import java.util.stream.Collectors;
+import model.Item;
+import model.Monster;
+import model.Player;
+import model.Potion;
+import model.Weapon;
+import view.InventoryView;
+import view.ViewBattle;
 
 public class BattleSystem {
     private static Random random = new Random();
-    ViewBattle viewBattle = new ViewBattle();
-    Scanner scanner = new Scanner(System.in);
+    Scanner scanner;
 
-    // Method untuk battle biasa
-    public void startBattle(Player currentPlayer, List<Monster> monsters) {
-        Monster currentMonster = generateMonster(currentPlayer.getLevel(), monsters);
-        
-        // Cek jika monster adalah boss, jika iya jangan lanjutkan
-        if (currentMonster.getType().equalsIgnoreCase("Boss")) {
-            System.out.println("You can't fight a boss here! Only available in Boss Battle.");
-            return;
-        }
-        
+    List<Weapon> weapons;
+    List<Potion> potions;
+
+    InventoryView inventoryView;
+    ViewBattle viewBattle = new ViewBattle();
+
+    public BattleSystem(Scanner scanner, List<Weapon> weapons, List<Potion> potions) {
+        this.weapons = weapons;
+        this.potions = potions;
+        this.scanner = scanner;
+        this.inventoryView = new InventoryView();
+    }
+
+    public void startBattle(Player currentPlayer, List<Monster> monsters){
+        Monster currentMonster = BattleSystem.generateMonster(currentPlayer.getLevel(), monsters);
         System.out.println("Found Monster");
         currentMonster.printMonsterDetails();
+        
+        
         System.out.println("Do you want to fight? (Y/N)");
         String choice = scanner.nextLine();
         
         switch (choice.toUpperCase()) {
+            case "N":
+            if(escaped(currentMonster.getEscapePrecentage())){
+                System.out.println("You chose to run away from the battle.");
+                break;
+            } else{
+                System.out.println("You can't run away from the battle.");
+            }
+
             case "Y":
+            int weaponDamage = useWeapon(currentPlayer.getEquippedWeapon()).getDamage();
+            currentPlayer.updateStats(0, weaponDamage, 0);
+            System.out.println("You are using " + currentPlayer.getEquippedWeapon().getItemName() + "! (+" + weaponDamage + " Damage)");
+
+                System.out.println("Do you want to use potion? (Y/N)");
+                choice = scanner.nextLine();
+                while (choice.equalsIgnoreCase("Y"))
+                {
+                    List<Item> availablePotions = currentPlayer.getInventory().stream()
+                    .filter(item -> item.getType().equals("Potion"))
+                    .toList();
+                    inventoryView.displayItems(availablePotions);
+                    System.out.print("Choose Item to Consume\n>> ");
+                    int itemIndex = scanner.nextInt();
+                    scanner.nextLine();
+                    if (itemIndex == 0) {
+                        break;
+                    } else if (itemIndex > 0 && itemIndex <= availablePotions.size()) {
+                        Item potionConsumed = availablePotions.get(itemIndex-1);
+                        if (potionConsumed.getType().equals("Potion")) {
+                            
+                            Potion potion = usePotion(potionConsumed);
+                            currentPlayer.removeItemFromInventory(potionConsumed);
+
+                            currentPlayer.updateStats(potion.getHpBoost(), potion.getAtkBoost(), potion.getDefBoost());
+                            
+                            System.out.println("You have consumed " + availablePotions.get(itemIndex - 1).getItemName() + "!");
+                            System.out.println("+" + potion.getHpBoost() + " HP\n+" + potion.getAtkBoost() + " ATK\n+" + potion.getDefBoost() + " DEF");
+                        }
+                        else {
+                            System.out.println("Item type you want to equip is not Potion");
+                        }
+                    }
+                    else {
+                        System.out.println("Invalid item choice");
+                    }
+                    System.out.println("Do you want to use potion again?");
+                    choice = scanner.nextLine();
+                }
+                
+                System.out.println("Your Stats: ");
+                currentPlayer.displayPlayerInfo();
+                
+                
                 int playerHP = currentPlayer.getHp();
                 int monsterHP = currentMonster.getHp();
-
                 while (playerHP > 0 && monsterHP > 0) {
                     monsterHP = playerTurn(monsterHP, currentPlayer, currentMonster);
                     if (monsterHP <= 0) {
-                        viewBattle.WinBattle();
+                        System.out.println("You win!");
                         getLoot(currentPlayer, currentMonster);
+                        currentPlayer.resetStats();
                         break;
                     }
                     playerHP = monsterTurn(playerHP, currentPlayer, currentMonster);
                     if (playerHP <= 0) {
-                        viewBattle.LoseBattle();
+                        System.out.println("You Lose!");
+                        currentPlayer.resetStats();
                         return;
                     }
                 }
                 break;
-
-            case "N":
-                if (escaped(currentMonster.getEscapePrecentage())) {
-                    System.out.println("You chose to run away from the battle.");
-                    return;
-                } else {
-                    System.out.println("You can't run away from the battle.");
-                }
-                
-                playerHP = currentPlayer.getHp();
-                monsterHP = currentMonster.getHp();
-                
-                while (playerHP > 0 && monsterHP > 0) {
-                    monsterHP = playerTurn(monsterHP, currentPlayer, currentMonster);
-                    if (monsterHP <= 0) {
-                        viewBattle.WinBattle();
-                        getLoot(currentPlayer, currentMonster);
-                        break;
-                    }
-                    playerHP = monsterTurn(playerHP, currentPlayer, currentMonster);
-                    if (playerHP <= 0) {
-                        viewBattle.LoseBattle();
-                        return;
-                    }
-                }
-                break;
-
+            
             default:
                 System.out.println("Invalid Option.");
         }
+        
     }
 
-    // Method untuk menghasilkan monster
-    protected static Monster generateMonster(int playerLevel, List<Monster> monsters) {
-        List<Monster> filteredMonsters = monsters.stream().filter(monster -> monster.getLevelRequirement() <= playerLevel).collect(Collectors.toList());
+    protected static Monster generateMonster(int playerLevel, List<Monster> monsters){
+        List<Monster> filteredMonsters = monsters.stream().filter(monster->monster.getLevelRequirement() <= playerLevel).collect(Collectors.toList());
         if (filteredMonsters.isEmpty()) {
             throw new RuntimeException("No monsters found.");
         }
@@ -89,42 +126,50 @@ public class BattleSystem {
         return filteredMonsters.get(randomIndex);
     }
 
-    // Method untuk battle player
-    protected int playerTurn(int monsterHP, Player currentPlayer, Monster currentMonster) {
+    protected int playerTurn(int monsterHP, Player currentPlayer, Monster currentMonster){
         int playerDamage = calculateDamage(currentPlayer.getAtk(), currentMonster.getDef());
 
         monsterHP = Math.max(0, (monsterHP - playerDamage));
-        System.out.println("You dealt " + playerDamage + " damage. Monster HP: " + monsterHP);
-        
+            System.out.println(currentMonster.getMonsterName() + " dealt " + playerDamage + " damage. Enemy HP: " + monsterHP);
+            
         return monsterHP;
     }
 
-    // Method untuk turn monster
-    protected int monsterTurn(int playerHP, Player currentPlayer, Monster currentMonster) {
+    protected int monsterTurn(int playerHP, Player currentPlayer, Monster currentMonster){
         int monsterDamage = calculateDamage(currentMonster.getAtk(), currentPlayer.getDef());
 
         playerHP = Math.max(0, (playerHP - monsterDamage));
-        System.out.println(currentMonster.getMonsterName() + " dealt " + monsterDamage + " damage. Your HP: " + playerHP);
-        
+            System.out.println("You dealt " + monsterDamage + " damage. Player HP: " + playerHP);
+            
         return playerHP;
     }
 
-    // Method untuk perhitungan damage
-    protected int calculateDamage(int attack, int defense) {
+    protected int calculateDamage(int attack, int defense){
         int actualDefense = random.nextInt(defense);
-        return Math.max(0, attack - actualDefense);
+        return Math.max(0, attack - actualDefense );
     }
 
-    // Method untuk mendapatkan loot
-    public void getLoot(Player currentPlayer, Monster currentMonster) {
-        currentPlayer.gainExp(currentMonster.getExpLoot());
+    public void getLoot(Player currentPlayer, Monster currentMonster){
         currentPlayer.setGold(currentPlayer.getGold() + currentMonster.getMoneyLoot());
         currentPlayer.setFragment(currentPlayer.getFragment() + currentMonster.getFragmentLoot());
-        System.out.println("Loot received:");
-        System.out.println(" - EXP        : " + currentMonster.getExpLoot() + " Points");
+        System.out.println("Hasil Jarahan:");
+        System.out.println(" - EXP        : " + currentMonster.getExpLoot() + " Point");
         System.out.println(" - Money      : " + currentMonster.getMoneyLoot() + " Gold");
-        System.out.println(" - Fragments  : " + currentMonster.getFragmentLoot() + " Fragments");
+        System.out.println(" - Fragment   : " + currentMonster.getFragmentLoot() + " Fragment");
+        currentPlayer.gainExp(currentMonster.getExpLoot());
     }
+
+    public void LosePunishment(Player currentPlayer, Monster currentMonster){
+        currentPlayer.setGold(currentPlayer.getGold()-2*currentMonster.getMoneyLoot());
+    }
+
+    public boolean escaped(int escapePrecentage){
+        int value = random.nextInt(100) + 1;
+        return value <= escapePrecentage;
+    }
+    
+    
+
 
     // Method untuk Boss Battle
     public void startBossBattle(Player currentPlayer, List<Monster> monsters) {
@@ -143,7 +188,7 @@ public class BattleSystem {
         System.out.println("Battle Start!");
         
         int bossCooldown = boss.getCooldownSkill();
-
+        
             // Menampilkan informasi boss monster
             System.out.println("Found Boss Monster");
             System.out.println("Name    : " + boss.getMonsterName());
@@ -165,31 +210,74 @@ public class BattleSystem {
             
             // Implementasi aksi yang dipilih pemain (Battle, Use Item, Escape)
             switch (bossAction) {
-                case "1":
-                int playerHP = currentPlayer.getHp();
-                int monsterHP = boss.getHp();
-                
-                while (playerHP > 0 && monsterHP > 0) {
-                    monsterHP = playerTurn(monsterHP, currentPlayer, boss);
-                    if (monsterHP <= 0) {
-                        viewBattle.WinBattle();
-                        getLoot(currentPlayer, boss);
-                        break;
-                    }
-                    playerHP = monsterTurn(playerHP, currentPlayer, boss);
-                    if (playerHP <= 0) {
-                        viewBattle.LoseBattle();
-                        return;
-                    }
-                }
-                    break;
-                case "2":
-                    // Implementasi penggunaan item (belum ditentukan lebih lanjut)
-                    System.out.println("You decided to use an item...");
-                    break;
                 case "3":
-                    // Implementasi Escape (belum ditentukan lebih lanjut)
-                    System.out.println("You decided to escape from the battle...");
+                if(escaped(boss.getEscapePrecentage())){
+                    System.out.println("You chose to run away from the battle.");
+                    break;
+                } else{
+                    System.out.println("You can't run away from the battle.");
+                }
+
+                case "2":int weaponDamage = useWeapon(currentPlayer.getEquippedWeapon()).getDamage();
+                currentPlayer.updateStats(0, weaponDamage, 0);
+                System.out.println("You are using " + currentPlayer.getEquippedWeapon().getItemName() + "! (+" + weaponDamage + " Damage)");
+    
+                    System.out.println("Do you want to use potion? (Y/N)");
+                    String choice = scanner.nextLine();
+                    while (choice.equalsIgnoreCase("Y"))
+                    {
+                        List<Item> availablePotions = currentPlayer.getInventory().stream()
+                        .filter(item -> item.getType().equals("Potion"))
+                        .toList();
+                        inventoryView.displayItems(availablePotions);
+                        System.out.print("Choose Item to Consume\n>> ");
+                        int itemIndex = scanner.nextInt();
+                        scanner.nextLine();
+                        if (itemIndex == 0) {
+                            break;
+                        } else if (itemIndex > 0 && itemIndex <= availablePotions.size()) {
+                            Item potionConsumed = availablePotions.get(itemIndex-1);
+                            if (potionConsumed.getType().equals("Potion")) {
+                                
+                                Potion potion = usePotion(potionConsumed);
+                                currentPlayer.removeItemFromInventory(potionConsumed);
+    
+                                currentPlayer.updateStats(potion.getHpBoost(), potion.getAtkBoost(), potion.getDefBoost());
+                                
+                                System.out.println("You have consumed " + availablePotions.get(itemIndex - 1).getItemName() + "!");
+                                System.out.println("+" + potion.getHpBoost() + " HP\n+" + potion.getAtkBoost() + " ATK\n+" + potion.getDefBoost() + " DEF");
+                            }
+                            else {
+                                System.out.println("Item type you want to equip is not Potion");
+                            }
+                        }
+                        else {
+                            System.out.println("Invalid item choice");
+                        }
+                        System.out.println("Do you want to use potion again?");
+                        choice = scanner.nextLine();
+                    }
+                    
+                    System.out.println("Your Stats: ");
+                    currentPlayer.displayPlayerInfo();
+                    break;
+                case "1":
+                    int playerHP = currentPlayer.getHp();
+                    int monsterHP = boss.getHp();
+                    
+                    while (playerHP > 0 && monsterHP > 0) {
+                        monsterHP = playerTurn(monsterHP, currentPlayer, boss);
+                        if (monsterHP <= 0) {
+                            viewBattle.WinBattle();
+                            getLoot(currentPlayer, boss);
+                            break;
+                        }
+                        playerHP = monsterTurn(playerHP, currentPlayer, boss);
+                        if (playerHP <= 0) {
+                            viewBattle.LoseBattle();
+                            return;
+                        }
+                    }
                     break;
                 default:
                     System.out.println("Invalid action. Try again.");
@@ -215,8 +303,9 @@ public class BattleSystem {
             System.out.println("You have been defeated...");
         } else if (boss.getHp() <= 0) {
             System.out.println("Congratulations! You defeated the boss!");
-            currentPlayer.addMoney(boss.getMoneyLoot());
-            currentPlayer.addExp(boss.getExpLoot());
+            currentPlayer.setGold(currentPlayer.getGold() + boss.getMoneyLoot());
+            currentPlayer.setFragment(currentPlayer.getFragment() + boss.getFragmentLoot());
+            currentPlayer.gainExp(boss.getExpLoot());
             System.out.println("You earned " + boss.getMoneyLoot() + " money and " + boss.getExpLoot() + " EXP!");
         }
     }
@@ -240,10 +329,61 @@ public class BattleSystem {
         }
         return null;
     }
+    
+    // public upgradeMonsterStats(int monsterHP, int monsterAtk, int monsterDef, int monsterGoldLoot, int monsterFragmentLoot, int monster ){
+        
+    // }
 
-    // Method untuk memeriksa apakah player bisa kabur
-    public boolean escaped(int escapePercentage) {
-        int value = random.nextInt(100) + 1;
-        return value <= escapePercentage;  // Jika nilai lebih kecil atau sama dengan persen kabur, kabur berhasil
+    // public boolean useSkill(){}
+
+    // public int checkSkill(String skillName){
+    //     int skillDamage = 0;
+    //     switch (skillName) {
+    //         case "Poison":
+                
+    //             break;
+    //         case "Paralyze":
+                
+    //             break;
+    //         case "Bleeding":
+                
+    //             break;
+    //         case "Drain":
+                
+    //             break;
+        
+    //         default:
+    //             break;
+    //     }
+
+    //     return skillDamage;
+    // }
+    
+    public Weapon useWeapon(Item equippedWeapon){
+        Weapon weaponUsed = findWeaponByName(weapons, equippedWeapon.getItemName());
+        return weaponUsed;
+    }
+
+    public Potion usePotion(Item potion){
+        Potion potionUsed = findPotionByName(potions, potion.getItemName());
+        return potionUsed;
+    }
+
+    public static Weapon findWeaponByName(List<Weapon> weapons, String name){
+        for (Weapon weapon : weapons) {
+            if (weapon.getItemName().equals(name)) {
+                return weapon;
+            }
+        }
+        return null;
+    }
+    
+    public static Potion findPotionByName(List<Potion> potions, String name){
+        for (Potion potion : potions) {
+            if (potion.getItemName().equals(name)) {
+                return potion;
+            }
+        }
+        return null;
     }
 }
