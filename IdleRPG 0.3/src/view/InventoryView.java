@@ -8,6 +8,7 @@ public class InventoryView {
     public void displayMenu() {
         System.out.println("\n=== Inventory ===");
         System.out.println("1. View Items");
+        System.out.println("2. Equip Weapon");
         System.out.println("0. Exit Inventory");
         System.out.print("Select an option: ");
     }
@@ -20,7 +21,7 @@ public class InventoryView {
         
         System.out.println("\nYour Items:");
         for (Item item : items) {
-            System.out.println("- " + item.getItemName() + " (" + item.getType() + ")");
+            System.out.println((items.indexOf(item)+1) + "- " + item.getItemName() + " (" + item.getType() + ")");
         }
     }
 
