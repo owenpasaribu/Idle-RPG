@@ -1,9 +1,5 @@
 package controller;
 
-import model.Monster;
-import model.Player;
-import model.Item;
-
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.FileReader;
@@ -11,11 +7,18 @@ import java.io.FileWriter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
+import model.Item;
+import model.Monster;
+import model.Player;
+import model.Potion;
+import model.Weapon;
+
 
 public class FileHandler {
     private final String PLAYERS_FILE = "src/data/players_data.csv";
     private final String MONSTERS_FILE = "src/data/monsters_data.csv";
-    private final String ITEMS_FILE = "src/data/items_data.csv";
+    private final String WEAPONS_FILE = "src/data/weapons_data.csv";
+    private final String POTIONS_FILE = "src/data/potions_data.csv";
 
 
     public List<Player> loadPlayers(List<Item> items){
@@ -31,20 +34,24 @@ public class FileHandler {
                 int exp = Integer.parseInt(data[3]);
                 int money = Integer.parseInt(data[4]);
                 int fragment = Integer.parseInt(data[5]);
-
+                
                 Player player = new Player(username, password, level, exp, money, fragment);
                 
-               // Fungsi buat load kemudian cari + tambahin item ke inventory
-                for (int i = 6; i < data.length; i++) {
+                if (!data[6].equals("null")) {
+                    Item equippedWeapon = findItemByName(items, data[6]);
+                    player.setEquippedWeapon(equippedWeapon);
+                }
+                
+                for (int i = 7; i < data.length; i++) {
                     Item item = findItemByName(items, data[i]);
                     player.addItemToInventory(item);
                 }
                 
                 players.add(player);
-                //player.displayPlayerInfo();
+                // player.displayPlayerInfo();
             }
         } catch (Exception e) {
-            System.out.println("Error reading players file: " + e.getMessage());
+            System.out.println("Error reading players data file: " + e.getMessage());
         }
         return players;
     }
@@ -54,6 +61,8 @@ public class FileHandler {
             for (Player player : players) {
                 bw.write(player.getUsername() + "," + player.getPassword() + "," + player.getLevel() + "," + player.getExp() + "," + player.getGold() + "," + player.getFragment());
 
+                bw.write("," + (player.getEquippedWeapon() != null ? player.getEquippedWeapon().getItemName() : "null"));
+
                 // Fungsi buat save item dari inventory ke file
                 for (Item item : player.getInventory()) {
                     bw.write("," + item.getItemName());
@@ -62,6 +71,7 @@ public class FileHandler {
                 bw.newLine();
             }
         } catch (Exception e) {
+            // TODO: handle exception
             System.out.println("Error saving player data: " + e.getMessage());
         }
     }
@@ -102,15 +112,14 @@ public class FileHandler {
         return null;
     }
 
-    public List<Monster> loadMonsters() {
+    public List<Monster> loadMonsters(){
         List<Monster> monsters = new ArrayList<>();
-        try (BufferedReader br = new BufferedReader(new FileReader(MONSTERS_FILE))) {
+        try(BufferedReader br = new BufferedReader(new FileReader(MONSTERS_FILE))){
             String line;
-            br.readLine();  // Untuk melewati header (jika ada)
-            
+            line = br.readLine();
             while ((line = br.readLine()) != null) {
                 String[] data = line.split(",");
-    
+
                 String monsterName = data[0];
                 String type = data[1];
                 int levelRequirement = Integer.parseInt(data[2]);
@@ -127,45 +136,98 @@ public class FileHandler {
                 int expLoot = Integer.parseInt(data[13]);
                 String uniqueSkill = data[14];
                 int cooldownSkill = Integer.parseInt(data[15]);
-    
-                // Membuat objek monster baru berdasarkan data yang dimuat
+
                 Monster monster = new Monster(monsterName, type, levelRequirement, hp, atk, def, hpIndicator, atkIndicator, defIndicator, accuracy, escapePrecentage, moneyLoot, fragmentLoot, expLoot, uniqueSkill, cooldownSkill);
-                monsters.add(monster);  // Menambahkan monster ke dalam daftar
+                monsters.add(monster);
+                // monster.printMonsterDetails();
+                
             }
         } catch (Exception e) {
-            System.out.println("Error reading monsters file: " + e.getMessage());
+            System.out.println("Error reading monsters data file: " + e.getMessage());
         }
         return monsters;
     }
-    
 
-    public List<Item> loadItems(){
-        List<Item> items = new ArrayList<>();
-        try(BufferedReader br = new BufferedReader(new FileReader(ITEMS_FILE))){
+    public List<Weapon> loadWeapons(){
+        List<Weapon> weapons = new ArrayList<>();
+        try (BufferedReader br = new BufferedReader(new FileReader(WEAPONS_FILE))){
             String line;
             line = br.readLine();
-            while ((line = br.readLine()) != null) {
+            while ((line = br.readLine())!=null) {
                 String[] data = line.split(",");
 
-                String itemName = data[0];
+                String name = data[0];
                 String type = data[1];
                 int level = Integer.parseInt(data[2]);
-                int price = Integer.parseInt(data[3]);
+                int levelReq = Integer.parseInt(data[3]);
+                int price = Integer.parseInt(data[4]);
+                String tier = data[5];
+                int damage = Integer.parseInt(data[6]);
+                int accuracy = Integer.parseInt(data[7]);
+                String weaponSkill = data[8];
+                int cooldownSkill = Integer.parseInt(data[9]);
+                String effect = data[10];
 
-                Item item = new Item(itemName, type, level, price);
-                items.add(item);
-                //item.printItemData();
+                Weapon weapon = new Weapon(name, type, levelReq, level, price, tier, damage, accuracy, weaponSkill, cooldownSkill, effect);
+                weapons.add(weapon);
             }
         } catch (Exception e) {
-            System.out.println("Error reading items file: " + e.getMessage());
+            // TODO: handle exception
+            System.out.println("Error reading weapons data file: " + e.getMessage());
         }
-        return items;
+        return weapons;
+    }
+    
+    public List<Potion> loadPotions(){
+        List<Potion> potions = new ArrayList<>();
+        try (BufferedReader br = new BufferedReader(new FileReader(POTIONS_FILE))){
+            String line;
+            line = br.readLine();
+            while ((line = br.readLine())!=null) {
+                String[] data = line.split(",");
+
+                String name = data[0];
+                String type = data[1];
+                int levelReq = Integer.parseInt(data[2]);
+                int level = Integer.parseInt(data[3]);
+                int price = Integer.parseInt(data[4]);
+                int hpBoost = Integer.parseInt(data[5]);
+                int atkBoost = Integer.parseInt(data[6]);
+                int defBoost = Integer.parseInt(data[7]);
+                String effect = data[8];
+                
+                Potion potion = new Potion(name, type, levelReq, level, price, hpBoost, atkBoost, defBoost,effect);
+                potions.add(potion);
+            }
+        } catch (Exception e) {
+            // TODO: handle exception
+            System.out.println("Error reading potions data file: " + e.getMessage());
+        }
+        return potions;
     }
 
     public static Item findItemByName(List<Item> items, String name){
         for (Item item : items) {
             if (item.getItemName().equals(name)) {
                 return item;
+            }
+        }
+        return null;
+    }
+    
+    public static Weapon findWeaponByName(List<Weapon> weapons, String name){
+        for (Weapon weapon : weapons) {
+            if (weapon.getItemName().equals(name)) {
+                return weapon;
+            }
+        }
+        return null;
+    }
+    
+    public static Potion findPotionByName(List<Potion> potions, String name){
+        for (Potion potion : potions) {
+            if (potion.getItemName().equals(name)) {
+                return potion;
             }
         }
         return null;
