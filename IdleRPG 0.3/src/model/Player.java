@@ -187,8 +187,10 @@ public class Player {
         System.out.println("HP: " + this.hp);
         System.out.println("Attack: " + this.atk);
         System.out.println("Defense: " + this.def);
-        System.out.println("Money: " + this.money);
+        System.out.println("Gold: " + this.gold);
         System.out.println("Fragments: " + this.fragment);
+        System.out.println("Equipped Weapon: " + this.equippedWeapon.getItemName());
+        // System.out.println("Items: " + formatItems(player.getItems()));
         System.out.println("------------------------");
     }
 }
