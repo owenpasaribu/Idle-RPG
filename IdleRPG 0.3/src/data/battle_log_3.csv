@@ -1,0 +1,13 @@
+Turn,Attacker,Target,Damage,Player HP,Monster HP,Monster Name,Gold,EXP,Fragment
+1,Player,Orc,7,100,193,Orc,100,50,10
+1,Orc,Player,19,81,193,Orc,100,50,10
+2,Player,Orc,10,81,183,Orc,100,50,10
+2,Orc,Player,19,62,183,Orc,100,50,10
+3,Player,Orc,19,62,164,Orc,100,50,10
+3,Orc,Player,22,40,164,Orc,100,50,10
+4,Player,Orc,10,40,154,Orc,100,50,10
+4,Orc,Player,18,22,154,Orc,100,50,10
+5,Player,Orc,18,22,136,Orc,100,50,10
+5,Orc,Player,15,7,136,Orc,100,50,10
+6,Player,Orc,2,7,134,Orc,100,50,10
+6,Orc,Player,20,0,134,Orc,100,50,10
