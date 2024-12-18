@@ -149,15 +149,40 @@ public class BattleSystem {
         return Math.max(0, attack - actualDefense );
     }
 
-    public void getLoot(Player currentPlayer, Monster currentMonster){
+    // Method untuk mendapatkan loot
+    public void getLoot(Player currentPlayer, Monster currentMonster) {
+    // Jika monster adalah boss (termasuk Curse Boss) di battle boss
+    if (currentMonster.getType().equalsIgnoreCase("Boss")) {
+        // Tidak ada pengurangan pada EXP atau gold di boss battle
+        currentPlayer.gainExp(currentMonster.getExpLoot());
         currentPlayer.setGold(currentPlayer.getGold() + currentMonster.getMoneyLoot());
         currentPlayer.setFragment(currentPlayer.getFragment() + currentMonster.getFragmentLoot());
-        System.out.println("Hasil Jarahan:");
-        System.out.println(" - EXP        : " + currentMonster.getExpLoot() + " Point");
+        System.out.println("Loot received:");
+        System.out.println(" - EXP        : " + currentMonster.getExpLoot() + " Points");
         System.out.println(" - Money      : " + currentMonster.getMoneyLoot() + " Gold");
-        System.out.println(" - Fragment   : " + currentMonster.getFragmentLoot() + " Fragment");
-        currentPlayer.gainExp(currentMonster.getExpLoot());
+        System.out.println(" - Fragments  : " + currentMonster.getFragmentLoot() + " Fragments");
+
+    } else {
+        // Jika monster adalah monster biasa, periksa level pemain
+        if (currentPlayer.getLevel() % 10 == 0) {
+            // Jika level kelipatan 10, tidak dapat EXP pada battle biasa
+            System.out.println("You are at level " + currentPlayer.getLevel() + ". No EXP gained in normal battles.");
+            currentPlayer.setGold(currentPlayer.getGold() + currentMonster.getMoneyLoot());
+            currentPlayer.setFragment(currentPlayer.getFragment() + currentMonster.getFragmentLoot());
+            System.out.println(" - Money      : " + currentMonster.getMoneyLoot() + " Gold");
+            System.out.println(" - Fragments  : " + currentMonster.getFragmentLoot() + " Fragments");
+        } else {
+            // Jika level bukan kelipatan 10, tetap dapat EXP, Gold, dan Fragment
+            currentPlayer.gainExp(currentMonster.getExpLoot());
+            currentPlayer.setGold(currentPlayer.getGold() + currentMonster.getMoneyLoot());
+            currentPlayer.setFragment(currentPlayer.getFragment() + currentMonster.getFragmentLoot());
+            System.out.println("Loot received:");
+            System.out.println(" - EXP        : " + currentMonster.getExpLoot() + " Points");
+            System.out.println(" - Money      : " + currentMonster.getMoneyLoot() + " Gold");
+            System.out.println(" - Fragments  : " + currentMonster.getFragmentLoot() + " Fragments");
+        }
     }
+}
 
     public void LosePunishment(Player currentPlayer, Monster currentMonster){
         currentPlayer.setGold(currentPlayer.getGold()-2*currentMonster.getMoneyLoot());
