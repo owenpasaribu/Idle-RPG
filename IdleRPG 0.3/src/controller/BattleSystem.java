@@ -48,9 +48,13 @@ public class BattleSystem {
             }
 
             case "Y":
-            int weaponDamage = useWeapon(currentPlayer.getEquippedWeapon()).getDamage();
-            currentPlayer.updateStats(0, weaponDamage, 0);
-            System.out.println("You are using " + currentPlayer.getEquippedWeapon().getItemName() + "! (+" + weaponDamage + " Damage)");
+            if (currentPlayer.getEquippedWeapon() != null) {
+                int weaponDamage = useWeapon(currentPlayer.getEquippedWeapon()).getDamage();
+                currentPlayer.updateStats(0, weaponDamage, 0);
+                System.out.println("You are using " + currentPlayer.getEquippedWeapon().getItemName() + "! (+" + weaponDamage + " Damage)");
+            }else{
+                System.out.println("You are not equip any weapon right now.");
+            }
 
                 System.out.println("Do you want to use potion? (Y/N)");
                 choice = scanner.nextLine();
@@ -105,6 +109,7 @@ public class BattleSystem {
                     playerHP = monsterTurn(playerHP, currentPlayer, currentMonster);
                     if (playerHP <= 0) {
                         System.out.println("You Lose!");
+                        LosePunishment(currentPlayer, currentMonster);
                         currentPlayer.resetStats();
                         return;
                     }
@@ -140,7 +145,6 @@ public class BattleSystem {
 
         playerHP = Math.max(0, (playerHP - monsterDamage));
             System.out.println("You dealt " + monsterDamage + " damage. Player HP: " + playerHP);
-            
         return playerHP;
     }
 
@@ -151,28 +155,9 @@ public class BattleSystem {
 
     // Method untuk mendapatkan loot
     public void getLoot(Player currentPlayer, Monster currentMonster) {
-    // Jika monster adalah boss (termasuk Curse Boss) di battle boss
-    if (currentMonster.getType().equalsIgnoreCase("Boss")) {
-        // Tidak ada pengurangan pada EXP atau gold di boss battle
-        currentPlayer.gainExp(currentMonster.getExpLoot());
-        currentPlayer.setGold(currentPlayer.getGold() + currentMonster.getMoneyLoot());
-        currentPlayer.setFragment(currentPlayer.getFragment() + currentMonster.getFragmentLoot());
-        System.out.println("Loot received:");
-        System.out.println(" - EXP        : " + currentMonster.getExpLoot() + " Points");
-        System.out.println(" - Money      : " + currentMonster.getMoneyLoot() + " Gold");
-        System.out.println(" - Fragments  : " + currentMonster.getFragmentLoot() + " Fragments");
-
-    } else {
-        // Jika monster adalah monster biasa, periksa level pemain
-        if (currentPlayer.getLevel() % 10 == 0) {
-            // Jika level kelipatan 10, tidak dapat EXP pada battle biasa
-            System.out.println("You are at level " + currentPlayer.getLevel() + ". No EXP gained in normal battles.");
-            currentPlayer.setGold(currentPlayer.getGold() + currentMonster.getMoneyLoot());
-            currentPlayer.setFragment(currentPlayer.getFragment() + currentMonster.getFragmentLoot());
-            System.out.println(" - Money      : " + currentMonster.getMoneyLoot() + " Gold");
-            System.out.println(" - Fragments  : " + currentMonster.getFragmentLoot() + " Fragments");
-        } else {
-            // Jika level bukan kelipatan 10, tetap dapat EXP, Gold, dan Fragment
+        // Jika monster adalah boss (termasuk Curse Boss) di battle boss
+        if (currentMonster.getType().equalsIgnoreCase("Boss")) {
+            // Tidak ada pengurangan pada EXP atau gold di boss battle
             currentPlayer.gainExp(currentMonster.getExpLoot());
             currentPlayer.setGold(currentPlayer.getGold() + currentMonster.getMoneyLoot());
             currentPlayer.setFragment(currentPlayer.getFragment() + currentMonster.getFragmentLoot());
@@ -180,12 +165,31 @@ public class BattleSystem {
             System.out.println(" - EXP        : " + currentMonster.getExpLoot() + " Points");
             System.out.println(" - Money      : " + currentMonster.getMoneyLoot() + " Gold");
             System.out.println(" - Fragments  : " + currentMonster.getFragmentLoot() + " Fragments");
+        } else {
+            // Jika monster adalah monster biasa, periksa level pemain
+            if (currentPlayer.getLevel() % 10 == 0) {
+                // Jika level kelipatan 10, tidak dapat EXP pada battle biasa
+                System.out.println("You are at level " + currentPlayer.getLevel() + ". No EXP gained in normal battles.");
+                currentPlayer.setGold(currentPlayer.getGold() + currentMonster.getMoneyLoot());
+                currentPlayer.setFragment(currentPlayer.getFragment() + currentMonster.getFragmentLoot());
+                System.out.println(" - Money      : " + currentMonster.getMoneyLoot() + " Gold");
+                System.out.println(" - Fragments  : " + currentMonster.getFragmentLoot() + " Fragments");
+            } else {
+                // Jika level bukan kelipatan 10, tetap dapat EXP, Gold, dan Fragment
+                currentPlayer.gainExp(currentMonster.getExpLoot());
+                currentPlayer.setGold(currentPlayer.getGold() + currentMonster.getMoneyLoot());
+                currentPlayer.setFragment(currentPlayer.getFragment() + currentMonster.getFragmentLoot());
+                System.out.println("Loot received:");
+                System.out.println(" - EXP        : " + currentMonster.getExpLoot() + " Points");
+                System.out.println(" - Money      : " + currentMonster.getMoneyLoot() + " Gold");
+                System.out.println(" - Fragments  : " + currentMonster.getFragmentLoot() + " Fragments");
+            }
         }
     }
-}
 
     public void LosePunishment(Player currentPlayer, Monster currentMonster){
         currentPlayer.setGold(currentPlayer.getGold()-2*currentMonster.getMoneyLoot());
+        System.out.println("Your gold has reduced " + 2*currentMonster.getMoneyLoot());
     }
 
     public boolean escaped(int escapePrecentage){
@@ -193,9 +197,6 @@ public class BattleSystem {
         return value <= escapePrecentage;
     }
     
-    
-
-
     // Method untuk Boss Battle
     public void startBossBattle(Player currentPlayer, List<Monster> monsters) {
         //cek apakah level pemain adalah kelipatan 10
@@ -300,6 +301,7 @@ public class BattleSystem {
                         playerHP = monsterTurn(playerHP, currentPlayer, boss);
                         if (playerHP <= 0) {
                             viewBattle.LoseBattle();
+                            LosePunishment(currentPlayer, boss);
                             return;
                         }
                     }
@@ -328,10 +330,7 @@ public class BattleSystem {
             System.out.println("You have been defeated...");
         } else if (boss.getHp() <= 0) {
             System.out.println("Congratulations! You defeated the boss!");
-            currentPlayer.setGold(currentPlayer.getGold() + boss.getMoneyLoot());
-            currentPlayer.setFragment(currentPlayer.getFragment() + boss.getFragmentLoot());
-            currentPlayer.gainExp(boss.getExpLoot());
-            System.out.println("You earned " + boss.getMoneyLoot() + " money and " + boss.getExpLoot() + " EXP!");
+            getLoot(currentPlayer, boss);
         }
     }
 
