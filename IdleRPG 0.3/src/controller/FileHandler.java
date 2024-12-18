@@ -40,6 +40,8 @@ public class FileHandler {
                 if (!data[6].equals("null")) {
                     Item equippedWeapon = findItemByName(items, data[6]);
                     player.setEquippedWeapon(equippedWeapon);
+                } else {
+                    player.setEquippedWeapon(null);
                 }
                 
                 for (int i = 7; i < data.length; i++) {
