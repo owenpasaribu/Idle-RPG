@@ -1,7 +1,7 @@
 package model;
-import java.util.List;
-import java.util.Scanner;
+
 import java.util.ArrayList;
+import java.util.List;
 
 public class Player {
     private String username;
@@ -11,12 +11,13 @@ public class Player {
     private int hp;
     private int atk;
     private int def;
-    private int money;
+    private int gold;
     private int fragment;
+    private Item equippedWeapon;
     private List<Item> inventory;
 
     // Konstruktor
-    public Player(String username, String password, int level, int exp, int money, int fragment) {
+    public Player(String username, String password, int level, int exp, int gold, int fragment) {
         this.username = username;
         this.password = password;
         this.level = level;
@@ -24,7 +25,7 @@ public class Player {
         this.hp = (100+(25*(level-1)));
         this.atk = (20+(15*(level-1)));
         this.def = (10+(8*(level-1)));
-        this.money = money;
+        this.gold = gold;
         this.fragment = fragment;
         this.inventory = new ArrayList<>();
     }
@@ -92,13 +93,13 @@ public class Player {
         this.def = def;
     }
 
-    // Getter dan Setter untuk money
+    // Getter dan Setter untuk gold
     public int getGold() {
-        return money;
+        return gold;
     }
 
-    public void setGold(int money) {
-        this.money = money;
+    public void setGold(int gold) {
+        this.gold = gold;
     }
 
     // Getter dan Setter untuk fragment
@@ -121,62 +122,42 @@ public class Player {
     public void removeItemFromInventory(Item item){
         inventory.remove(item);
     }
-
-    public void gainExp(int expLoot) {
-        this.exp += expLoot;
     
-        // Rumus pengalaman yang diperlukan untuk naik level
-        int requiredExpForNextLevel = 100 + (50 * (this.level - 1));
-        
-        while (this.exp >= requiredExpForNextLevel) {
-            this.exp -= requiredExpForNextLevel; // Kurangi EXP yang dipakai untuk naik level
+    public void setEquippedWeapon(Item equippedWeapon){
+        this.equippedWeapon = equippedWeapon;
+    }
+
+    public Item getEquippedWeapon(){
+        return equippedWeapon;
+    }
+
+    public void gainExp(int expLoot){
+        this.exp += expLoot;
+        while (this.exp >= (100+(50*(this.level-1)))) {
+            this.exp=this.exp-(100 + (50*(this.level-1)));
             levelUp();
-            requiredExpForNextLevel = 100 + (50 * (this.level - 1)); // Update untuk level berikutnya
         }
     }
-    
 
     public void levelUp() {
         this.level++;
-        this.hp += 25;
-        this.atk += 15;
-        this.def += 8;
-        System.out.println("Congrats! You leveled up to Level " + this.level + "!");
+        this.hp+=25;
+        this.atk+=15;
+        this.def+=8;
+        System.out.println("Congrats! You leveled up to level" + this.level);
     }
     
-    // Menambahkan method getName() untuk mendapatkan nama pemain
-    public String getName() {
-        return this.username;
+    public void updateStats(int hp, int atk, int def) {
+        this.hp+=hp;
+        this.atk+=atk;
+        this.def+=def;
     }
 
-    // Menambahkan method attack() untuk menghitung damage serangan pemain
-    public int attack() {
-        return this.atk;  // Hanya mengembalikan nilai ATK untuk sementara
+    public void resetStats() {
+        this.hp = (100+(25*(level-1)));
+        this.atk = (20+(15*(level-1)));
+        this.def = (10+(8*(level-1)));
     }
-    // Menambahkan method useItem() untuk menggunakan item
-    public void useItem(Scanner scanner) {
-    
-    // Implementasi penggunaan item, misalnya:
-    System.out.println("Which item would you like to use?");
-    // Lakukan logika sesuai item yang ada di inventory
-    }
-
-    // Menambahkan method addMoney() untuk menambah uang pemain
-    public void addMoney(int amount) {
-        this.money += amount;
-    }
-
-    // Menambahkan method addExp() untuk menambah EXP pemain
-    public void addExp(int amount) {
-    this.exp += amount;
-    // Tambahkan logika untuk naik level jika EXP melebihi batas level
-    int requiredExp = 100 + (50 * (this.level - 1)); // Sesuaikan rumus EXP
-    while (this.exp >= requiredExp) {
-        this.exp -= requiredExp;
-        levelUp(); // Panggil method levelUp()
-        }
-    }
-
 
     // Menampilkan informasi pemain
     public void displayPlayerInfo() {
