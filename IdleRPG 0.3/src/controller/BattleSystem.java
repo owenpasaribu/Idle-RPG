@@ -363,7 +363,6 @@ public class BattleSystem {
                         playerHP = monsterTurn(playerHP, currentPlayer, boss);
                         if (playerHP <= 0) {
                             viewBattle.LoseBattle();
-                            LosePunishment(currentPlayer, boss);
                             return;
                         }
                     }
