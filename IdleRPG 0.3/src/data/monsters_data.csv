@@ -1,7 +1,7 @@
 monsterName,type,levelRequirement,hp,atk,def,hpIndicator,atkIndicator,defIndicator,accuracy,escapePrecentage,moneyLoot,fragmentLoot,expLoot,uniqueSkill,cooldownSkill
-Goblin,Warrior,1,100,15,10,Medium,Low,Low,85,10,50,5,20,Smash,5
-Orc,Warrior,1,200,25,20,High,Medium,Medium,80,15,100,10,50,Earthquake,10
-Slime,Mage,1,50,10,5,Low,VeryLow,VeryLow,90,5,20,2,10,Absorb,3
-Dragon,Boss,1,1000,150,100,VeryHigh,High,High,70,25,1000,50,500,FireBreath,15
-Troll,Warrior,1,300,35,25,High,Medium,Medium,75,10,200,15,80,Regenerate,7
-Phoenix,Mage,1,500,50,30,VeryHigh,Medium,Medium,80,5,500,30,150,Rebirth,20
+Goblin,Warrior,1,100,15,10,Medium,Low,Low,85,10,50,5,10,Smash,5
+Orc,Warrior,1,200,25,20,High,Medium,Medium,80,15,100,10,15,Earthquake,10
+Slime,Mage,1,50,10,5,Low,VeryLow,VeryLow,90,5,20,2,5,Absorb,3
+Dragon,Boss,1,1000,150,100,VeryHigh,High,High,70,25,1000,50,100,FireBreath,15
+Troll,Warrior,1,300,35,25,High,Medium,Medium,75,10,200,15,20,Regenerate,7
+Phoenix,Boss,1,500,50,30,VeryHigh,Medium,Medium,80,5,500,30,70,Rebirth,20
