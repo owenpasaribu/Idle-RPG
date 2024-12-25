@@ -30,6 +30,9 @@ public class BattleSystem {
     }
 
     public void startBattle(Player currentPlayer, List<Monster> monsters){
+        // Upgrade semua monster jika level pemain kelipatan 3
+        upgradeMonsterStats(currentPlayer, monsters);
+        
         Monster currentMonster = BattleSystem.generateMonster(currentPlayer.getLevel(), monsters);
         System.out.println("Found Monster");
         currentMonster.printMonsterDetails();
@@ -269,6 +272,9 @@ public class BattleSystem {
     
     // Method untuk Boss Battle
     public void startBossBattle(Player currentPlayer, List<Monster> monsters) {
+        // Upgrade semua stats boss monster jika level pemain melewati level 10 (11,21,31,dst..)
+        upgradeMonsterStats(currentPlayer, monsters);
+        
         //cek apakah level pemain adalah kelipatan 10
         if (currentPlayer.getLevel() % 10 != 0) {
             System.out.println("Increase your level, your level is not enough to fight the boss monster");
@@ -415,9 +421,36 @@ public class BattleSystem {
         return null;
     }
     
-    // public upgradeMonsterStats(int monsterHP, int monsterAtk, int monsterDef, int monsterGoldLoot, int monsterFragmentLoot, int monster ){
-        
-    // }
+    public void upgradeMonsterStats(Player currentPlayer, List<Monster> monsters) {
+        for (Monster monster : monsters) {
+            if (monster.getType().equalsIgnoreCase("Boss")) {
+                // Jika monster adalah boss monster
+                // Cek apakah pemain telah melewati level kelipatan 10
+                if (currentPlayer.getLevel() > monster.getLevel() && currentPlayer.getLevel() % 10 == 1) {
+                    monster.setLevel((currentPlayer.getLevel() / 10) + 1);
+                    // Tingkatkan statistik boss monster sebesar 35%
+                    monster.setHp((int) (monster.getHp() * 1.35));
+                    monster.setAtk((int) (monster.getAtk() * 1.35));
+                    monster.setDef((int) (monster.getDef() * 1.35));
+
+                    monster.setExpLoot((int) (monster.getExpLoot() * 1.15)); // Naikkan EXP 15%
+                    System.out.println("Boss Monster stats increased by 35% and EXP increased by 15%");
+                }
+            } else {
+                // Jika monster adalah monster biasa
+                // Cek apakah level pemain adalah kelipatan 5
+                if (currentPlayer.getLevel() % 3 == 0) {
+                    monster.setLevel((currentPlayer.getLevel() / 3) + 1);
+                    // Tingkatkan statistik monster biasa sebesar 20%
+                    monster.setHp((int) (monster.getHp() * 1.20));
+                    monster.setAtk((int) (monster.getAtk() * 1.20));
+                    monster.setDef((int) (monster.getDef() * 1.20));
+                    monster.setExpLoot((int) (monster.getExpLoot() * 1.15)); // Naikkan EXP 15%
+                    System.out.println("Normal Monster stats increased by 20% and EXP increased by 15%");
+                }
+            }
+        }
+    }
 
     // public boolean useSkill(){}
 
