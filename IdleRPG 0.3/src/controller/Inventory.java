@@ -56,7 +56,7 @@ public class Inventory {
             Item equippedWeapon = availableWeapons.get(itemIndex-1);
             if (equippedWeapon.getType().equals("Weapon")) {
                 
-                if (!player.getEquippedWeapon().getItemName().equals("null")) {
+                if (player.getEquippedWeapon()!=null) {
                     player.addItemToInventory(player.getEquippedWeapon());
                 }
                 player.removeItemFromInventory(equippedWeapon);
