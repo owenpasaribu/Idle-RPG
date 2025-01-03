@@ -5,8 +5,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.Scanner;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
 import java.util.stream.Collectors;
-
 import model.*;
 import view.ViewLogin;
 import view.ViewMenu;
@@ -23,7 +24,7 @@ public class App {
         ViewLogin viewLogin = new ViewLogin();
         ViewMenu viewMenu = new ViewMenu();
         ViewStats viewStats = new ViewStats();
-
+        BattleLog battleLog = new BattleLog();
         List<Monster> monsters = fileHandler.loadMonsters();
         List<Potion> potions = fileHandler.loadPotions();
         List<Weapon> weapons = fileHandler.loadWeapons();
@@ -33,7 +34,6 @@ public class App {
 
         List<Player> players = fileHandler.loadPlayers(items);
         
-        BattleSystem battleSystem = new BattleSystem(scanner, weapons, potions);
 
         while (currentPlayer == null) {
             viewLogin.Login();
@@ -57,12 +57,10 @@ public class App {
             viewMenu.Menu();
             String choice = scanner.nextLine();
 
-            // for (int i = 0; i < i; i++) {
-            //     try {
-            //         setTimeout(FileHandler.savePlayers(), 9999, currentPlayer);
-            //     } catch (Exception e) {
-            //     }
-            // }
+            ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
+
+            // Schedule the task to run every 5 seconds
+            // scheduler.scheduleAtFixedRate(() -> autoSave(fileHandler, currentPlayer), 0, 5, TimeUnit.SECONDS);
             
             switch (choice) {
                 case "1":
@@ -77,8 +75,8 @@ public class App {
     
                     switch (Stats) {
                         case "1":
-                            Inventory inventory = new Inventory(currentPlayer);
-                            inventory.manageInventory(scanner);
+                            Inventory inventory = new Inventory(scanner, currentPlayer);
+                            inventory.manageInventory();
                             break;
                         case "2":
                             System.out.println("Kembali ke menu utama...");
@@ -98,21 +96,22 @@ public class App {
                     if (!normalMonsters.isEmpty()) {
                         // Memilih monster acak dari list monster biasa
                         Monster monster = normalMonsters.get(new Random().nextInt(normalMonsters.size()));
-                        battleSystem.startBattle(currentPlayer, List.of(monster)); // Mengubah monster menjadi List
+                        BattleSystem battleSystem = new BattleSystem(scanner, currentPlayer, List.of(monster), weapons, potions);
+                        battleSystem.startBattle(); // Mengubah monster menjadi List
                     } else {
                         System.out.println("No normal monster available for battle!");
                     }
                     break;
                 case "3":
+                    BattleSystem battleSystem = new BattleSystem(scanner, currentPlayer, monsters, weapons, potions);
                     battleSystem.startBossBattle(currentPlayer, monsters); // Melakukan Boss Battle
                     break;
                 case "4":
-                    Shop shop = new Shop(currentPlayer, items);
-                    shop.openShop(scanner);
+                    Shop shop = new Shop(scanner, currentPlayer, items);
+                    shop.openShop();
                     break;
                 case "5":
-                    Inventory inventory = new Inventory(currentPlayer);
-                    inventory.manageInventory(scanner);
+                    battleLog.displayBattleLog();
                     break;
                 case "0":
                     fileHandler.savePlayers(players);
@@ -122,4 +121,10 @@ public class App {
             }
         }
     }
+
+    // public static void autoSave(FileHandler fileHandler, Player player) {
+    //     System.out.println("Auto-saving data... " + System.currentTimeMillis());
+    //     fileHandler.savePlayers(player);
+    // }
+    
 }
