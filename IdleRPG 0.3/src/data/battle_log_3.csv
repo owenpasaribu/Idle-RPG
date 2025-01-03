@@ -1,13 +1,15 @@
-Turn,Attacker,Target,Damage,Player HP,Monster HP,Monster Name,Gold,EXP,Fragment
-1,Player,Orc,7,100,193,Orc,100,50,10
-1,Orc,Player,19,81,193,Orc,100,50,10
-2,Player,Orc,10,81,183,Orc,100,50,10
-2,Orc,Player,19,62,183,Orc,100,50,10
-3,Player,Orc,19,62,164,Orc,100,50,10
-3,Orc,Player,22,40,164,Orc,100,50,10
-4,Player,Orc,10,40,154,Orc,100,50,10
-4,Orc,Player,18,22,154,Orc,100,50,10
-5,Player,Orc,18,22,136,Orc,100,50,10
-5,Orc,Player,15,7,136,Orc,100,50,10
-6,Player,Orc,2,7,134,Orc,100,50,10
-6,Orc,Player,20,0,134,Orc,100,50,10
+Turn,Attacker,Target,Damage,Player HP,Monster HP,Monster Name,Gold,EXP,Fragment,Hp Target
+1,Goblin,Player,13,87,100,Goblin,50,20,5,87
+2,Player,Goblin,13,87,87,Goblin,50,20,5,87
+3,Goblin,Player,15,72,87,Goblin,50,20,5,72
+4,Player,Goblin,16,72,71,Goblin,50,20,5,71
+5,Goblin,Player,8,64,71,Goblin,50,20,5,64
+6,Player,Goblin,19,64,52,Goblin,50,20,5,52
+7,Goblin,Player,13,51,52,Goblin,50,20,5,51
+8,Player,Goblin,18,51,34,Goblin,50,20,5,34
+9,Goblin,Player,14,37,34,Goblin,50,20,5,37
+10,Player,Goblin,13,37,21,Goblin,50,20,5,21
+11,Goblin,Player,9,28,21,Goblin,50,20,5,28
+12,Player,Goblin,11,28,10,Goblin,50,20,5,10
+13,Goblin,Player,15,13,10,Goblin,50,20,5,13
+14,Player,Goblin,20,13,0,Goblin,50,20,5,0
