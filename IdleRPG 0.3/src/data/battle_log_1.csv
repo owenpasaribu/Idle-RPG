@@ -1,7 +1,11 @@
-Turn,Attacker,Target,Damage,Player HP,Monster HP,Monster Name,Gold,EXP,Fragment
-1,Player,Phoenix,0,100,500,Phoenix,500,150,30
-1,Phoenix,Player,41,59,500,Phoenix,500,150,30
-2,Player,Phoenix,12,59,488,Phoenix,500,150,30
-2,Phoenix,Player,49,10,488,Phoenix,500,150,30
-3,Player,Phoenix,18,10,470,Phoenix,500,150,30
-3,Phoenix,Player,40,0,470,Phoenix,500,150,30
+Turn,Attacker,Target,Damage,Player HP,Monster HP,Monster Name,Gold,EXP,Fragment,Hp Target
+1,Player,Orc,12,100,188,Orc,100,50,10,188
+2,Orc,Player,21,79,188,Orc,100,50,10,79
+3,Player,Orc,16,79,172,Orc,100,50,10,172
+4,Orc,Player,22,57,172,Orc,100,50,10,57
+5,Player,Orc,4,57,168,Orc,100,50,10,168
+6,Orc,Player,22,35,168,Orc,100,50,10,35
+7,Player,Orc,9,35,159,Orc,100,50,10,159
+8,Orc,Player,20,15,159,Orc,100,50,10,15
+9,Player,Orc,3,15,156,Orc,100,50,10,156
+10,Orc,Player,17,0,156,Orc,100,50,10,0
