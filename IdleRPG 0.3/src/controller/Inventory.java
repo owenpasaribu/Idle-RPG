@@ -6,34 +6,35 @@ import model.Item;
 import model.Player;
 import view.InventoryView;
 
-
 public class Inventory {
-    private Player player;
-    private InventoryView inventoryView;
+    Scanner scanner;
+    private final Player player;
+    private final InventoryView inventoryView;
 
-    public Inventory(Player player) {
+    public Inventory(Scanner scanner, Player player) {
+        this.scanner = scanner;
         this.player = player;
         this.inventoryView = new InventoryView();
     }
 
-    public void manageInventory(Scanner scanner){
+    public void manageInventory() {
         while (true) {
             inventoryView.displayMenu();
             String choice = scanner.nextLine();
-            
+
             switch (choice) {
                 case "1":
                     displayItems();
                     break;
 
                 case "2":
-                    equipWeapon(scanner);
-                
+                    equipWeapon();
+
                 case "0":
                     return;
-                    
+
                 default:
-                    System.out.println("Invalid option. Try again.");
+                    inventoryView.displayInvalidOption();
             }
         }
     }
@@ -42,7 +43,7 @@ public class Inventory {
         inventoryView.displayItems(player.getInventory());
     }
 
-    public void equipWeapon(Scanner scanner){ 
+    public void equipWeapon(){ 
         List<Item> availableWeapons = player.getInventory().stream()
                     .filter(item -> item.getType().equals("Weapon"))
                     .toList();
@@ -55,7 +56,6 @@ public class Inventory {
         } else if (itemIndex > 0 && itemIndex <= availableWeapons.size()) {
             Item equippedWeapon = availableWeapons.get(itemIndex-1);
             if (equippedWeapon.getType().equals("Weapon")) {
-                
                 if (player.getEquippedWeapon()!=null) {
                     player.addItemToInventory(player.getEquippedWeapon());
                 }
