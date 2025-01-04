@@ -1,0 +1,12 @@
+Turn,Attacker,Target,Damage,Player HP,Monster HP,Monster Name,Gold,EXP,Fragment,Hp Target
+1,Player,Kraken,35,150,150,Kraken,16,42,7,150
+2,Kraken,Player,29,121,150,Kraken,16,42,7,121
+3,Player,Kraken,26,121,124,Kraken,16,42,7,124
+4,Kraken,Player,17,104,124,Kraken,16,42,7,104
+5,Player,Kraken,41,104,83,Kraken,16,42,7,83
+6,Kraken,Player,20,84,83,Kraken,16,42,7,84
+7,Player,Kraken,22,84,61,Kraken,16,42,7,61
+8,Kraken,Player,34,50,61,Kraken,16,42,7,50
+9,Player,Kraken,50,50,11,Kraken,16,42,7,11
+10,Kraken,Player,30,20,11,Kraken,16,42,7,20
+11,Player,Kraken,30,20,0,Kraken,16,42,7,0

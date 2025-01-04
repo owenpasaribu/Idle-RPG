@@ -1,0 +1,10 @@
+Turn,Attacker,Target,Damage,Player HP,Monster HP,Monster Name,Gold,EXP,Fragment,Hp Target
+1,Player,Loch Ness,45,150,140,Loch Ness,16,44,7,140
+2,Loch Ness,Player,17,133,140,Loch Ness,16,44,7,133
+3,Player,Loch Ness,43,133,97,Loch Ness,16,44,7,97
+4,Loch Ness,Player,40,93,97,Loch Ness,16,44,7,93
+5,Player,Loch Ness,44,93,53,Loch Ness,16,44,7,53
+6,Loch Ness,Player,27,66,53,Loch Ness,16,44,7,66
+7,Player,Loch Ness,50,66,3,Loch Ness,16,44,7,3
+8,Loch Ness,Player,36,30,3,Loch Ness,16,44,7,30
+9,Player,Loch Ness,49,30,0,Loch Ness,16,44,7,0

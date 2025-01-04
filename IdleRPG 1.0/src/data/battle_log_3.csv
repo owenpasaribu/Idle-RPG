@@ -1,0 +1,12 @@
+Turn,Attacker,Target,Damage,Player HP,Monster HP,Monster Name,Gold,EXP,Fragment,Hp Target
+1,Player,Cyclop,23,150,157,Cyclop,15,39,7,157
+2,Cyclop,Player,25,125,157,Cyclop,15,39,7,125
+3,Player,Cyclop,37,125,120,Cyclop,15,39,7,120
+4,Cyclop,Player,19,106,120,Cyclop,15,39,7,106
+5,Player,Cyclop,49,106,71,Cyclop,15,39,7,71
+6,Cyclop,Player,39,67,71,Cyclop,15,39,7,67
+7,Player,Cyclop,25,67,46,Cyclop,15,39,7,46
+8,Cyclop,Player,15,52,46,Cyclop,15,39,7,52
+9,Player,Cyclop,38,52,8,Cyclop,15,39,7,8
+10,Cyclop,Player,23,29,8,Cyclop,15,39,7,29
+11,Player,Cyclop,34,29,0,Cyclop,15,39,7,0

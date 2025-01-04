@@ -1,0 +1,10 @@
+Fixed :
+Merapikan constructor tiap class
+- Fix Error Upgrade Monster Stats (Fungsi upgradeMonsterStats Class BattleSystem)
+- Fix Error Equip Weapon (Fungsi EquipWeapon Class Inventory)
+- Fix Gold Minus saat terkena punishment (Fungsi LosePunishment Class BattleSystem)
+- Fix Error Atk and Def Potion (Constructor Class Potion)
+- Fix Monster Attack first saat player gagal escape (Fungsi StartBattle Class BattleSystem)
+- Buat Escape Boss bermasalah(Harusnya gabisa escape) tidak perlu perubahan, cukup setting di csv Escape Precentage Bossnya 
+- Fix Boss Battlle Setelah Use Item, saat klik N langsung keluar
+

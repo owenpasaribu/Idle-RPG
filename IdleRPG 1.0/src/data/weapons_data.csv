@@ -1,0 +1,11 @@
+itemName,type,level,levelReq,price,tier,damage,accuracy,weaponSkill,cooldownSkill,effect
+Bronze Sword,Weapon,1,1,300,B,10,60,Double Slash,3,None
+Moonfang Dagger,Weapon,1,1,350,B,12,65,Tripple Slash,4,None
+Serpentstrike Bow,Weapon,1,1,400,B,18,65,Venomous Volley,4,Poison
+Aetherblade,Weapon,1,1,500,B,24,70,Stellar Cleave,5,Paralize
+Cure Staff,Weapon,1,1,700,A,30,75,Blessing,4,healandCure
+Thunderclash Mace,Weapon,1,1,800,A,55,50,Storms Wrath,4,paralize
+Drakefire Spear,Weapon,1,1,850,A,38,80,Inferno Thrust,5,Burn
+Stormcall Staff,Weapon,1,1,1300,S,45,90,Whirlwind,4,Paralize
+Doomspire,Weapon,1,1,1300,S,85,65,Earthshatter,3,Bleeding
+Soulrender Axe,Weapon,1,1,1300,S,55,80,Drain Essence,5,Drain
