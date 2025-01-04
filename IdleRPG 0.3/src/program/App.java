@@ -5,13 +5,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.Scanner;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
+//import java.util.concurrent.Executors;
+//import java.util.concurrent.ScheduledExecutorService;
 import java.util.stream.Collectors;
 import model.*;
 import view.ViewLogin;
 import view.ViewMenu;
-import view.ViewStats;
+//import view.ViewStats;
 
 public class App {
     
@@ -23,7 +23,7 @@ public class App {
         
         ViewLogin viewLogin = new ViewLogin();
         ViewMenu viewMenu = new ViewMenu();
-        ViewStats viewStats = new ViewStats();
+        //ViewStats viewStats = new ViewStats();
         BattleLog battleLog = new BattleLog();
         List<Monster> monsters = fileHandler.loadMonsters();
         List<Potion> potions = fileHandler.loadPotions();
@@ -57,7 +57,7 @@ public class App {
             viewMenu.Menu();
             String choice = scanner.nextLine();
 
-            ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
+            //ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
 
             // Schedule the task to run every 5 seconds
             // scheduler.scheduleAtFixedRate(() -> autoSave(fileHandler, currentPlayer), 0, 5, TimeUnit.SECONDS);
