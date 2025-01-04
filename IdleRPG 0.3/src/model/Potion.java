@@ -7,10 +7,10 @@ public class Potion extends Item{
     String effect;
 
     public Potion(String name, String type, int levelReq, int level, int price, int hpBoost, int atkBoost, int defBoost, String effect){
-        super(name, type, levelReq, level, price);
+        super(name, "Potion", levelReq, level, price);
         this.hpBoost = hpBoost;
         this.atkBoost = atkBoost;
-        this.defBoost = atkBoost;
+        this.defBoost = defBoost;
         this.effect = effect;
     }
 
