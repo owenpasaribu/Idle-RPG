@@ -7,17 +7,19 @@ import model.Player;
 import view.ShopView;
 
 public class Shop {
-    private Player player;
-    private List<Item> items;
-    private ShopView shopView;
+    Scanner scanner;
+    private final Player player;
+    List<Item> items;
+    private final ShopView shopView;
 
-    public Shop(Player player, List<Item> items) {
+    public Shop(Scanner scanner, Player player, List<Item> items) {
+        this.scanner = scanner;
         this.player = player;
         this.items = items;
         this.shopView = new ShopView();
     }
 
-    public void openShop(Scanner scanner) {
+    public void openShop() {
         boolean exitShop = false;
 
         while (!exitShop) {
@@ -25,7 +27,7 @@ public class Shop {
 
             switch (choice) {
                 case "1":
-                    handleBuyItem(scanner);
+                    handleBuyItem();
                     break;
                 case "2":
                     changeFragment();
@@ -39,7 +41,7 @@ public class Shop {
         }
     }
 
-    private void handleBuyItem(Scanner scanner) {
+    private void handleBuyItem() {
         while (true) {
             int itemIndex = shopView.getItemSelection(scanner, items, player);
 
