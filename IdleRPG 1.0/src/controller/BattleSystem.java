@@ -134,7 +134,6 @@ public class BattleSystem {
                         break;
                     }
                 }
-                saveBattleLog(battleLogs);
                 break;
             
             default:
@@ -319,36 +318,36 @@ public class BattleSystem {
             if (monster.getType().equalsIgnoreCase("Boss")) {
                 // Jika monster adalah boss monster
                 // Cek apakah pemain telah melewati level kelipatan 10
-                if (Player.getLevel() >= monster.getLevelRequirement() && Player.getLevel() % 10 == 1) {
+                if (Player.getLevel() > monster.getLevelRequirement() && Player.getLevel() % 10 == 1) {
+                    int levelUp = (player.getLevel() / 10) + 1;
                     // Tingkatkan level requirement boss monster
-                    monster.setLevelRequirement(monster.getLevelRequirement() + 1);
+                    monster.setLevelRequirement(Player.getLevel() + levelUp );
     
                     // Tingkatkan statistik boss monster sebesar 35%
-                    monster.setHp((int) (monster.getHp() * 1.35));
-                    monster.setAtk((int) (monster.getAtk() * 1.35));
-                    monster.setDef((int) (monster.getDef() * 1.35));
-                    
-                    // Naikkan EXP loot sebesar 15%
-                    monster.setExpLoot((int) (monster.getExpLoot() * 1.15));
+                    monster.setHp((int) (monster.getHp() + 250*levelUp));
+                    monster.setAtk((int) (monster.getAtk() + 100*levelUp));
+                    monster.setDef((int) (monster.getDef() + 70*levelUp));
+                    monster.setExpLoot((int) (monster.getExpLoot() * (1.15*levelUp)));
+
                     System.out.println("Boss Monster stats increased by 35% and EXP increased by 15%");
                 }
             } else {
                 // Jika monster adalah monster biasa
-                // Cek apakah level pemain adalah kelipatan 3
-                if (Player.getLevel() % 2 == 0) {
-                    // Tingkatkan level requirement monster biasa
-                    monster.setLevelRequirement(monster.getLevelRequirement() + 1);
-    
-                    // Tingkatkan statistik monster biasa sebesar 20%
-                    monster.setHp((int) (monster.getHp() + 50));
-                    monster.setAtk((int) (monster.getAtk() + 20));
-                    monster.setDef((int) (monster.getDef() + 15));
-                    monster.setExpLoot((int) (monster.getExpLoot() * 1.15)); // Naikkan EXP 15%
-    
-                    // Naikkan EXP loot sebesar 15%
-                    monster.setExpLoot((int) (monster.getExpLoot() * 1.15));
-                    System.out.println("Normal Monster stats increased and EXP increased 15%");
-                }
+                // Cek apakah level pemain adalah kelipatan 2
+                if (Player.getLevel() > monster.getLevelRequirement() && Player.getLevel() > 2) {
+
+                        int levelUp = player.getLevel() / 2;
+                        // Tingkatkan level requirement monster biasa
+                        monster.setLevelRequirement(monster.getLevelRequirement() + levelUp);
+        
+                        // Tingkatkan statistik monster biasa sebesar 20%
+                        monster.setHp((int) (monster.getHp() + 25*levelUp));
+                        monster.setAtk((int) (monster.getAtk() + 10*levelUp));
+                        monster.setDef((int) (monster.getDef() + 7*levelUp));
+                        monster.setExpLoot((int) (monster.getExpLoot() * (1.15*levelUp))); // Naikkan EXP 15%
+        
+                        System.out.println("Normal Monster stats increased and EXP increased 15%");
+                    }
             }
         }
     }
